@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import javax.swing.WindowConstants;
@@ -41,6 +42,7 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 	private JLabel jLabelNickname;
 	private JLabel jLabelIntro;
 	private JButton jButtonAtras;
+	private JPasswordField jPasswordFieldContraseña;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -98,9 +100,9 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 				jLabelPassword.setBounds(22, 175, 118, 16);
 			}
 			{
-				jTextFieldContraseña = new JTextField();
-				getContentPane().add(jTextFieldContraseña);
-				jTextFieldContraseña.setBounds(173, 172, 155, 23);
+				jPasswordFieldContraseña = new JPasswordField();
+				getContentPane().add(jPasswordFieldContraseña);
+				jPasswordFieldContraseña.setBounds(173, 172, 155, 23);
 			}
 			{
 				jButtonIngresar = new JButton();
@@ -135,7 +137,8 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 
 		if (e.getSource() == jButtonIngresar) {
 			String nickname = jTextFieldNickname.getText();
-			String password = jTextFieldContraseña.getText();
+			char[] arrayC = jPasswordFieldContraseña.getPassword(); 
+			String password = new String(arrayC);
 			cn = dataConnection.conexion();
 			try {
 				pst = cn.prepareStatement("select * from administrador where nickname=? and password=?");
