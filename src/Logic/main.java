@@ -1,6 +1,8 @@
 package Logic;
 
 import java.sql.ResultSet;
+import java.text.ParseException;
+
 import GUI.*;
 
 public class main {
@@ -8,22 +10,17 @@ public class main {
 	/**
 	 * método que 
 	 * @param args
+	 * @throws ParseException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		dataConnection connection= new dataConnection();
+		institutoMontenegro instituto= new institutoMontenegro();
 		ResultSet resultado;
 		String nombre;
-//		resultado=connection.getQuery("show tables");
-	
-//		try {
-//			while(resultado.next()){
-//				nombre=resultado.getString(columnIndex);
-//				System.out.println(nombre);
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+//		instituto.fechaHoy();
+		instituto.actualizarUltimoIngreso(instituto.fechaHoy());
+		
+
 
 	}
 

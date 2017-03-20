@@ -50,6 +50,7 @@ public class buscarEstudiante extends javax.swing.JFrame implements ActionListen
 	private JTextField jTextFieldDocumento;
 	private JLabel jLabeldocumento;
 	private JLabel jLabelIntro;
+	private JButton jButtonAtras;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -185,6 +186,13 @@ public class buscarEstudiante extends javax.swing.JFrame implements ActionListen
 				jButtonBuscar.setBounds(345, 98, 99, 30);
 				jButtonBuscar.addActionListener(this);
 			}
+			{
+				jButtonAtras = new JButton();
+				getContentPane().add(jButtonAtras);
+				jButtonAtras.setText("Atras");
+				jButtonAtras.setBounds(386, 12, 41, 23);
+				jButtonAtras.addActionListener(this);
+			}
 			pack();
 			this.setSize(465, 175);
 		} catch (Exception e) {
@@ -195,8 +203,15 @@ public class buscarEstudiante extends javax.swing.JFrame implements ActionListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int documento = Integer.parseInt(jTextFieldDocumento.getText());
+		if (e.getSource() == jButtonAtras) {
+			principalAdministrador p = new principalAdministrador();
+			p.setVisible(true);
+			this.dispose();
+		}
+
 		if (e.getSource() == jButtonBuscar) {
+
+			int documento = Integer.parseInt(jTextFieldDocumento.getText());
 			cn = dataConnection.conexion();
 			try {
 				pst = cn.prepareStatement(

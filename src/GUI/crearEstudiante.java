@@ -1,4 +1,5 @@
 package GUI;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.NetworkInterface;
@@ -14,27 +15,22 @@ import javax.swing.JTextField;
 
 import javax.swing.WindowConstants;
 
-
-
 import Logic.dataConnection;
 import Logic.institutoMontenegro;
 
 import javax.swing.SwingUtilities;
 
-
 /**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
-public class crearEstudiante extends javax.swing.JFrame implements ActionListener{
+ * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
+ * Builder, which is free for non-commercial use. If Jigloo is being used
+ * commercially (ie, by a corporation, company or business for any purpose
+ * whatever) then you should purchase a license for each developer using Jigloo.
+ * Please visit www.cloudgarden.com for details. Use of Jigloo implies
+ * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
+ * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
+ * ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
+public class crearEstudiante extends javax.swing.JFrame implements ActionListener {
 	/**
 	 * 
 	 */
@@ -55,12 +51,11 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	private JLabel jLabelApellidos;
 	private JTextField jTextFieldnombre;
 	private JLabel jLabelnombre;
-
-
+	private JButton jButtonAtras;
 
 	/**
-	* Auto-generated main method to display this JFrame
-	*/
+	 * Auto-generated main method to display this JFrame
+	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -70,17 +65,16 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			}
 		});
 	}
-	
+
 	PreparedStatement pst;
 	Connection cn;
 	ResultSet result;
-	
+
 	public crearEstudiante() {
 		super();
 		initGUI();
 	}
-	
-	
+
 	private void initGUI() {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -175,31 +169,42 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 				jButtonCrearEstudiante.setBounds(384, 206, 100, 23);
 				jButtonCrearEstudiante.addActionListener(this);
 			}
+			{
+				jButtonAtras = new JButton();
+				getContentPane().add(jButtonAtras);
+				jButtonAtras.setText("Atras");
+				jButtonAtras.setBounds(451, 30, 41, 23);
+				jButtonAtras.addActionListener(this);
+			}
 			pack();
 			this.setSize(534, 421);
 		} catch (Exception e) {
-		    //add your error handling code here
+			// add your error handling code here
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String nombres=jTextFieldnombre.getText();
-		String apellidos=jTextFieldApellidos.getText();
-		int documento=Integer.parseInt(jTextFieldDocumento.getText());
-		String grado=jTextFieldSexo.getText();
-		String sexo=jTextFieldSexo.getText();
-		String tipoPoblacion=jTextFieldTipoPoblacion.getText();
-		String metodologia=jTextFieldMetodologia.getText();
-		
-		if(e.getSource()==jButtonCrearEstudiante){
-			
-			cn= dataConnection.conexion();
+		if (e.getSource() == jButtonAtras) {
+			principalAdministrador p = new principalAdministrador();
+			p.setVisible(true);
+			this.dispose();
+		}
+		if (e.getSource() == jButtonCrearEstudiante) {
+			String nombres = jTextFieldnombre.getText();
+			String apellidos = jTextFieldApellidos.getText();
+			int documento = Integer.parseInt(jTextFieldDocumento.getText());
+			String grado = jTextFieldSexo.getText();
+			String sexo = jTextFieldSexo.getText();
+			String tipoPoblacion = jTextFieldTipoPoblacion.getText();
+			String metodologia = jTextFieldMetodologia.getText();
+
+			cn = dataConnection.conexion();
 			try {
-				pst= cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,"
-								+ "grado,sexo,tipoPoblacion,modeloPedagogico) values (?,?,?,?,?,?,?)");
-				
+				pst = cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,"
+						+ "grado,sexo,tipoPoblacion,modeloPedagogico) values (?,?,?,?,?,?,?)");
+
 				pst.setInt(1, documento);
 				pst.setString(2, nombres);
 				pst.setString(3, apellidos);
@@ -207,13 +212,12 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 				pst.setString(5, sexo);
 				pst.setString(6, tipoPoblacion);
 				pst.setString(7, metodologia);
-				
-				
-				int res=pst.executeUpdate();
-				if(res>0){
+
+				int res = pst.executeUpdate();
+				if (res > 0) {
 					JOptionPane.showMessageDialog(null, "El estudiante se ha agregado con exito");
 					limpiar();
-				}else{
+				} else {
 					JOptionPane.showMessageDialog(null, "ups...ocurrio un problema");
 				}
 				cn.close();
@@ -222,10 +226,10 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 				e1.printStackTrace();
 			}
 		}
-		
+
 	}
-	
-	public void limpiar(){
+
+	public void limpiar() {
 		jTextFieldApellidos.setText(" ");
 		jTextFieldnombre.setText(" ");
 		jTextFieldDocumento.setText(" ");

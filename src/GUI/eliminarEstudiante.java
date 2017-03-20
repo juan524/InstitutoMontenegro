@@ -34,6 +34,7 @@ public class eliminarEstudiante extends javax.swing.JFrame implements ActionList
 	private JTextField jTextFieldDocumento;
 	private JLabel jLabelintro2;
 	private JLabel jLabelIntro;
+	private JButton jButtonAtras;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -91,6 +92,13 @@ public class eliminarEstudiante extends javax.swing.JFrame implements ActionList
 				jButtonEliminarEstudiante.setBounds(135, 205, 141, 31);
 				jButtonEliminarEstudiante.addActionListener(this);
 			}
+			{
+				jButtonAtras = new JButton();
+				getContentPane().add(jButtonAtras);
+				jButtonAtras.setText("Atras");
+				jButtonAtras.setBounds(368, 239, 41, 23);
+				jButtonAtras.addActionListener(this);
+			}
 			pack();
 			this.setSize(436, 311);
 		} catch (Exception e) {
@@ -121,6 +129,11 @@ public class eliminarEstudiante extends javax.swing.JFrame implements ActionList
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		if (e.getSource() == jButtonAtras) {
+			principalAdministrador p = new principalAdministrador();
+			p.setVisible(true);
+			this.dispose();
 		}
 
 	}

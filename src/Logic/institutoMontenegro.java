@@ -1,28 +1,33 @@
 package Logic;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
-import javax.xml.transform.Result;
-
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.ConnectionPropertiesTransform;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
 
 public class institutoMontenegro {
 
 	private List<Estudiante> estudiantes;
 	private Administrador administrador;
 	private dataConnection dataconnection;
+	private Date fecha = new Date();
 
-	public institutoMontenegro(List<Estudiante> estudiantes, Administrador administrador,
-			dataConnection dataconnection) {
+	Connection cn;
+	PreparedStatement pst;
+	ResultSet rst;
+
+	public institutoMontenegro(List<Estudiante> estudiantes, Administrador administrador, dataConnection dataconnection,
+			Date fecha) {
 		super();
 		this.estudiantes = estudiantes;
 		this.administrador = administrador;
 		this.dataconnection = dataconnection;
+		this.fecha = fecha;
 	}
 
 	public institutoMontenegro() {
@@ -52,5 +57,93 @@ public class institutoMontenegro {
 	public void setDataconnection(dataConnection dataconnection) {
 		this.dataconnection = dataconnection;
 	}
+
+	@SuppressWarnings("deprecation")
+	public java.sql.Date fechaHoy() throws ParseException {
+
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 0);
+		fecha = cal.getTime();
+
+		SimpleDateFormat format1 = new SimpleDateFormat("yyy-MM-dd");
+		String date1 = format1.format(cal.getTime());
+		fecha = java.sql.Date.valueOf(date1);
+
+		System.out.println(date1);
+		System.out.println(fecha);
+		return (java.sql.Date) fecha;
+
+	}
+
+	public void insertarRegistro(int documento, Date fecha, Date ultimoIngreso) throws SQLException, ParseException {
+
+		cn = dataConnection.conexion();
+
+		pst = cn.prepareStatement(
+				"insert into instituto_montenegro (documentoEstudiante,fechaIngreso,ultimoIngreso) values(?,?,?);");
+
+		pst.setInt(1, documento);
+		pst.setDate(2, (java.sql.Date) fecha);
+		pst.setDate(3, (java.sql.Date) ultimoIngreso);
+
+		int res = pst.executeUpdate();
+		if (res > 0) {
+			System.out.println("El registro se ingreso con exito");
+
+		} else {
+			System.out.println("ups...ocurrio un problema");
+		}
+		cn.close();
+
+	}
+
+	public boolean validarFechas(java.sql.Date fechaHoy, java.sql.Date ultimoIngresoFecha) {
+
+		if (ultimoIngresoFecha.compareTo(fechaHoy) == 0) {
+			return true;
+		} else
+
+			return false;
+	}
+
+	public Date ultimaFechaIngreso(int documento) {
+		Date ultimoIngreso = null;
+		cn = dataConnection.conexion();
+		try {
+			pst = cn.prepareStatement("select ultimoIngreso from instituto_montenegro WHERE documentoEstudiante=?;");
+			pst.setInt(1, documento);
+			rst = pst.executeQuery();
+			if (rst.next()) {
+				ultimoIngreso = rst.getDate(1);
+
+			} else {
+				System.out.println("error");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(ultimoIngreso);
+		return ultimoIngreso;
+	}
+
+	public void actualizarUltimoIngreso(Date fechaHoy) {
+		
+		cn = dataconnection.conexion();
+		try {
+			pst = cn.prepareStatement("update instituto_montenegro set ultimoIngreso=?");
+			pst.setDate(1, (java.sql.Date) fechaHoy);
+			int rst = pst.executeUpdate();
+			if(rst>0){
+				System.out.println("correcto");
+			}else{
+				System.out.println("error");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 
 }

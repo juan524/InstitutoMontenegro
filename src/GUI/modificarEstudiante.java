@@ -51,6 +51,7 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 	private JLabel jLabeldocumento;
 	private JLabel jLabelIntro;
 	private JButton jButtonModificar;
+	private JButton jButtonAtras;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -193,6 +194,13 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 				jButtonModificar.setBounds(151, 383, 123, 23);
 				jButtonModificar.addActionListener(this);
 			}
+			{
+				jButtonAtras = new JButton();
+				getContentPane().add(jButtonAtras);
+				jButtonAtras.setText("Atras");
+				jButtonAtras.setBounds(389, 12, 41, 23);
+				jButtonAtras.addActionListener(this);
+			}
 			pack();
 			this.setSize(465, 175);
 		} catch (Exception e) {
@@ -203,8 +211,9 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int documento = Integer.parseInt(jTextFieldDocumento.getText());
+		
 		if (e.getSource() == jButtonBuscar) {
+			int documento = Integer.parseInt(jTextFieldDocumento.getText());
 			cn = dataConnection.conexion();
 			try {
 				pst = cn.prepareStatement(
@@ -239,7 +248,7 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 					jLabelMetodologia.setVisible(true);
 					jTextFieldMetodologia.setVisible(true);
 					jTextFieldMetodologia.setText(res.getString("modeloPedagogico"));
-					
+
 					jButtonBuscar.setVisible(false);
 				} else {
 					JOptionPane.showMessageDialog(null, "El estudiante buscado no se encuentra en la base de datos");
@@ -274,9 +283,11 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 				e1.printStackTrace();
 			}
 		}
-
+		if (e.getSource() == jButtonAtras) {
+			principalAdministrador p = new principalAdministrador();
+			p.setVisible(true);
+			this.dispose();
+		}
 	}
-	
-	
 
 }

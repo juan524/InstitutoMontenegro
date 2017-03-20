@@ -42,10 +42,11 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 	private JTextField jTextFieldNickname;
 	private JLabel jLabelNickname;
 	private JLabel jLabelIntro;
+	private JButton jButtonAtras;
 
 	/**
-	* Auto-generated main method to display this JFrame
-	*/
+	 * Auto-generated main method to display this JFrame
+	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -66,79 +67,86 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 	}
 
 	private void initGUI() {
-			try {
-				setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-				getContentPane().setLayout(null);
-				{
-					jLabelTitulo = new JLabel();
-					getContentPane().add(jLabelTitulo);
-					jLabelTitulo.setText("ModificarAdministrador");
-					jLabelTitulo.setBounds(144, 28, 146, 30);
-				}
-				{
-					jLabelIntro = new JLabel();
-					getContentPane().add(jLabelIntro);
-					jLabelIntro.setText("Para modificar un administrador, busque primero el administrador");
-					jLabelIntro.setBounds(12, 56, 420, 36);
-				}
-				{
-					jLabelNickname = new JLabel();
-					getContentPane().add(jLabelNickname);
-					jLabelNickname.setText("NickName");
-					jLabelNickname.setBounds(31, 104, 88, 24);
-				}
-				{
-					jTextFieldNickname = new JTextField();
-					getContentPane().add(jTextFieldNickname);
-					jTextFieldNickname.setBounds(161, 98, 149, 23);
-				}
-				{
-					jLabelNombres = new JLabel();
-					getContentPane().add(jLabelNombres);
-					jLabelNombres.setText("nombre(s):");
-					jLabelNombres.setBounds(31, 140, 100, 23);
-				}
-				{
-					jTextFieldnombres = new JTextField();
-					getContentPane().add(jTextFieldnombres);
-					jTextFieldnombres.setBounds(161, 140, 149, 23);
-				}
-				{
-					jLabelApellidos = new JLabel();
-					getContentPane().add(jLabelApellidos);
-					jLabelApellidos.setText("Apellidos");
-					jLabelApellidos.setBounds(31, 175, 100, 16);
-				}
-				{
-					jTextFieldApellidos = new JTextField();
-					getContentPane().add(jTextFieldApellidos);
-					jTextFieldApellidos.setBounds(161, 172, 149, 23);
-				}
-				{
-					jLabelPassword = new JLabel();
-					getContentPane().add(jLabelPassword);
-					jLabelPassword.setText("Password");
-					jLabelPassword.setBounds(31, 215, 55, 16);
-				}
-				{
-					jTextFieldPassword = new JTextField();
-					getContentPane().add(jTextFieldPassword);
-					jTextFieldPassword.setBounds(161, 212, 149, 23);
-				}
-				{
-					jButtonBuscar = new JButton();
-					getContentPane().add(jButtonBuscar);
-					jButtonBuscar.setText("BUSCAR");
-					jButtonBuscar.setBounds(345, 98, 99, 30);
-					jButtonBuscar.addActionListener(this);
-				}
-				{
-					jButtonModificar = new JButton();
-					getContentPane().add(jButtonModificar);
-					jButtonModificar.setText("Modificar Administrador");
-					jButtonModificar.setBounds(119, 273, 210, 38);
-					jButtonModificar.addActionListener(this);
-				}
+		try {
+			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			getContentPane().setLayout(null);
+			{
+				jLabelTitulo = new JLabel();
+				getContentPane().add(jLabelTitulo);
+				jLabelTitulo.setText("ModificarAdministrador");
+				jLabelTitulo.setBounds(144, 28, 146, 30);
+			}
+			{
+				jLabelIntro = new JLabel();
+				getContentPane().add(jLabelIntro);
+				jLabelIntro.setText("Para modificar un administrador, busque primero el administrador");
+				jLabelIntro.setBounds(12, 56, 420, 36);
+			}
+			{
+				jLabelNickname = new JLabel();
+				getContentPane().add(jLabelNickname);
+				jLabelNickname.setText("NickName");
+				jLabelNickname.setBounds(31, 104, 88, 24);
+			}
+			{
+				jTextFieldNickname = new JTextField();
+				getContentPane().add(jTextFieldNickname);
+				jTextFieldNickname.setBounds(161, 98, 149, 23);
+			}
+			{
+				jLabelNombres = new JLabel();
+				getContentPane().add(jLabelNombres);
+				jLabelNombres.setText("nombre(s):");
+				jLabelNombres.setBounds(31, 140, 100, 23);
+			}
+			{
+				jTextFieldnombres = new JTextField();
+				getContentPane().add(jTextFieldnombres);
+				jTextFieldnombres.setBounds(161, 140, 149, 23);
+			}
+			{
+				jLabelApellidos = new JLabel();
+				getContentPane().add(jLabelApellidos);
+				jLabelApellidos.setText("Apellidos");
+				jLabelApellidos.setBounds(31, 175, 100, 16);
+			}
+			{
+				jTextFieldApellidos = new JTextField();
+				getContentPane().add(jTextFieldApellidos);
+				jTextFieldApellidos.setBounds(161, 172, 149, 23);
+			}
+			{
+				jLabelPassword = new JLabel();
+				getContentPane().add(jLabelPassword);
+				jLabelPassword.setText("Password");
+				jLabelPassword.setBounds(31, 215, 55, 16);
+			}
+			{
+				jTextFieldPassword = new JTextField();
+				getContentPane().add(jTextFieldPassword);
+				jTextFieldPassword.setBounds(161, 212, 149, 23);
+			}
+			{
+				jButtonBuscar = new JButton();
+				getContentPane().add(jButtonBuscar);
+				jButtonBuscar.setText("BUSCAR");
+				jButtonBuscar.setBounds(345, 98, 99, 30);
+				jButtonBuscar.addActionListener(this);
+			}
+			{
+				jButtonModificar = new JButton();
+				getContentPane().add(jButtonModificar);
+				jButtonModificar.setText("Modificar Administrador");
+				jButtonModificar.setBounds(119, 273, 210, 38);
+				jButtonModificar.addActionListener(this);
+			}
+			{
+				jButtonAtras = new JButton();
+				getContentPane().add(jButtonAtras);
+				jButtonAtras.setText("Atras");
+				jButtonAtras.setBounds(379, 12, 41, 23);
+				jButtonAtras.addActionListener(this);
+			}
 			pack();
 			this.setSize(465, 175);
 		} catch (Exception e) {
@@ -169,14 +177,12 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 
 					jLabelNickname.setVisible(true);
 					jTextFieldNickname.setEditable(false);
-					
-					jTextFieldPassword.setText(res.getString("password"));
-					jTextFieldPassword.setEnabled(false);
-					
-					
+
+					jTextFieldPassword.setEditable(true);
+
 					jButtonBuscar.setVisible(false);
 				} else {
-					JOptionPane.showMessageDialog(null, "El estudiante buscado no se encuentra en la base de datos");
+					JOptionPane.showMessageDialog(null, "El administrador buscado no se encuentra en la base de datos");
 					jTextFieldNickname.setText(" ");
 				}
 
@@ -185,32 +191,30 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 				e1.printStackTrace();
 			}
 		}
-//		if (e.getSource() == jButtonModificar) {
-//			cn = dataConnection.conexion();
-//			try {
-//
-//				pst = cn.prepareStatement(
-//						"update estudiante set nombres=?,apellidos=?,grado=?,tipoPoblacion=?,modeloPedagogico=? where documento=?");
-//				pst.setString(1, jTextFieldnombres.getText());
-//				pst.setString(2, jTextFieldApellidos.getText());
-//				pst.setString(3, jTextFieldGrado.getText());
-//				pst.setString(4, jTextFieldTipoPoblacion.getText());
-//				pst.setString(5, jTextFieldMetodologia.getText());
-//				pst.setInt(6, Integer.parseInt(jTextFieldNickname.getText()));
-//				int res = pst.executeUpdate();
-//				if (res > 0) {
-//					JOptionPane.showMessageDialog(null, "El estudiante ha sido modificado");
-//				} else {
-//					JOptionPane.showMessageDialog(null, "No se pudo modificar estudiante, ocurrio un error");
-//				}
-//			} catch (SQLException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//		}
+		if (e.getSource() == jButtonModificar) {
+			cn = dataConnection.conexion();
+			try {
 
+				pst = cn.prepareStatement("update administrador set password=?,nombres=?,apellidos=? where nickname=?");
+				pst.setString(1, jTextFieldPassword.getText());
+				pst.setString(2, jTextFieldnombres.getText());
+				pst.setString(3, jTextFieldApellidos.getText());
+				pst.setString(4, jTextFieldNickname.getText());
+				int res = pst.executeUpdate();
+				if (res > 0) {
+					JOptionPane.showMessageDialog(null, "El Administrador ha sido modificado");
+				} else {
+					JOptionPane.showMessageDialog(null, "No se pudo modificar administrador, ocurrio un error");
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		if (e.getSource() == jButtonAtras) {
+			principalAdministrador p = new principalAdministrador();
+			p.setVisible(true);
+			this.dispose();
+		}
 	}
-	
-	
 
 }
