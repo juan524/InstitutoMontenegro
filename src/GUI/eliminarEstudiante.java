@@ -29,6 +29,10 @@ import javax.swing.SwingUtilities;
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
 public class eliminarEstudiante extends javax.swing.JFrame implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel jLabelEliminarEstudiante;
 	private JButton jButtonEliminarEstudiante;
 	private JTextField jTextFieldDocumento;
@@ -126,7 +130,6 @@ public class eliminarEstudiante extends javax.swing.JFrame implements ActionList
 				cn.close();
 
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}

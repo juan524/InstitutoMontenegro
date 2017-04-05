@@ -21,6 +21,10 @@ import javax.swing.SwingUtilities;
  */
 public class principalAdministrador extends javax.swing.JFrame implements
 		ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton jButtonBuscarEstudiante;
 	private JLabel jLabelDescripcion;
 	private JButton jButtonEliminarEstudiante;

@@ -58,14 +58,13 @@ public class institutoMontenegro {
 		this.dataconnection = dataconnection;
 	}
 
-	@SuppressWarnings("deprecation")
 	public java.sql.Date fechaHoy() throws ParseException {
 
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, 0);
 		fecha = cal.getTime();
 
-		SimpleDateFormat format1 = new SimpleDateFormat("yyy-MM-dd");
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 		String date1 = format1.format(cal.getTime());
 		fecha = java.sql.Date.valueOf(date1);
 
@@ -120,7 +119,6 @@ public class institutoMontenegro {
 				System.out.println("error");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(ultimoIngreso);
@@ -128,22 +126,20 @@ public class institutoMontenegro {
 	}
 
 	public void actualizarUltimoIngreso(Date fechaHoy) {
-		
+
 		cn = dataconnection.conexion();
 		try {
 			pst = cn.prepareStatement("update instituto_montenegro set ultimoIngreso=?");
 			pst.setDate(1, (java.sql.Date) fechaHoy);
 			int rst = pst.executeUpdate();
-			if(rst>0){
+			if (rst > 0) {
 				System.out.println("correcto");
-			}else{
+			} else {
 				System.out.println("error");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
 
 }

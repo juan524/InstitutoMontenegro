@@ -37,12 +37,11 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 	private JLabel jLabel;
 	private JLabel jLabelPassword;
 	private JButton jButtonIngresar;
-	private JTextField jTextFieldContraseña;
 	private JTextField jTextFieldNickname;
 	private JLabel jLabelNickname;
 	private JLabel jLabelIntro;
 	private JButton jButtonAtras;
-	private JPasswordField jPasswordFieldContraseña;
+	private JPasswordField jPasswordFieldContrasena;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -100,9 +99,9 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 				jLabelPassword.setBounds(22, 175, 118, 16);
 			}
 			{
-				jPasswordFieldContraseña = new JPasswordField();
-				getContentPane().add(jPasswordFieldContraseña);
-				jPasswordFieldContraseña.setBounds(173, 172, 155, 23);
+				jPasswordFieldContrasena = new JPasswordField();
+				getContentPane().add(jPasswordFieldContrasena);
+				jPasswordFieldContrasena.setBounds(173, 172, 155, 23);
 			}
 			{
 				jButtonIngresar = new JButton();
@@ -137,7 +136,7 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 
 		if (e.getSource() == jButtonIngresar) {
 			String nickname = jTextFieldNickname.getText();
-			char[] arrayC = jPasswordFieldContraseña.getPassword(); 
+			char[] arrayC = jPasswordFieldContrasena.getPassword(); 
 			String password = new String(arrayC);
 			cn = dataConnection.conexion();
 			try {

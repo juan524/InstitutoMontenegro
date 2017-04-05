@@ -2,11 +2,12 @@ package GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.NetworkInterface;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -52,6 +53,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	private JTextField jTextFieldnombre;
 	private JLabel jLabelnombre;
 	private JButton jButtonAtras;
+	institutoMontenegro instituto = new institutoMontenegro();
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -195,7 +197,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			String nombres = jTextFieldnombre.getText();
 			String apellidos = jTextFieldApellidos.getText();
 			int documento = Integer.parseInt(jTextFieldDocumento.getText());
-			String grado = jTextFieldSexo.getText();
+			String grado = jTextFieldGrado.getText();
 			String sexo = jTextFieldSexo.getText();
 			String tipoPoblacion = jTextFieldTipoPoblacion.getText();
 			String metodologia = jTextFieldMetodologia.getText();
@@ -215,6 +217,14 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 
 				int res = pst.executeUpdate();
 				if (res > 0) {
+					Date fecha = fechaIncio();
+					try {
+						instituto.insertarRegistro(documento, fecha, fecha);
+					} catch (ParseException e1) {
+
+						e1.printStackTrace();
+					}
+
 					JOptionPane.showMessageDialog(null, "El estudiante se ha agregado con exito");
 					limpiar();
 				} else {
@@ -222,7 +232,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 				}
 				cn.close();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
+
 				e1.printStackTrace();
 			}
 		}
@@ -237,6 +247,12 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		jTextFieldMetodologia.setText(" ");
 		jTextFieldSexo.setText(" ");
 		jTextFieldTipoPoblacion.setText(" ");
+	}
+
+	public Date fechaIncio() {
+		String date1 = "1999-05-24";
+		Date fecha = java.sql.Date.valueOf(date1);
+		return fecha;
 	}
 
 }

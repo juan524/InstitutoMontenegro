@@ -23,6 +23,10 @@ import javax.swing.SwingUtilities;
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
 public class generarInforme extends javax.swing.JFrame implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton jButtonGenerarInforme;
 	private JLabel jLabelFechaInicio;
 	private JLabel jLabelFechaFinal;
