@@ -1,36 +1,51 @@
 package GUI;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import javax.swing.WindowConstants;
+
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.highgui.Highgui;
+import org.opencv.highgui.VideoCapture;
+import org.opencv.objdetect.CascadeClassifier;
 
 import Logic.dataConnection;
 import Logic.institutoMontenegro;
 
 import javax.swing.SwingUtilities;
 
-/**
- * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
- * Builder, which is free for non-commercial use. If Jigloo is being used
- * commercially (ie, by a corporation, company or business for any purpose
- * whatever) then you should purchase a license for each developer using Jigloo.
- * Please visit www.cloudgarden.com for details. Use of Jigloo implies
- * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
- * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
- * ANY CORPORATE OR COMMERCIAL PURPOSE.
- */
 public class crearEstudiante extends javax.swing.JFrame implements ActionListener {
 	/**
 	 * 
@@ -53,12 +68,57 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	private JTextField jTextFieldnombre;
 	private JLabel jLabelnombre;
 	private JButton jButtonAtras;
+	private JButton jButtonGuardarFotos;
+	private JButton jButtonAtras2;
+	private JButton jButtonTomarFoto;
+	private JPanel jPanel1;
+	private JButton jButtonTerminar;
 	institutoMontenegro instituto = new institutoMontenegro();
+
+	// atributos necesarios para guardar imagenes en la base de datos
+	private DaemonThread myThread = new DaemonThread();
+	int count = 0;
+	// Variable de incremento
+	int cont = 0;
+	VideoCapture webSource = null;
+	Mat frame = new Mat();
+	MatOfByte mem = new MatOfByte();
+	CascadeClassifier faceDetector = new CascadeClassifier(
+			crearEstudiante.class.getResource("haarcascade_frontalface_alt.xml").getPath().substring(1));
+	MatOfRect faceDetections = new MatOfRect();
+
+	// atributos para el manejo de la base de datos
+	PreparedStatement pst;
+	Connection cn;
+	ResultSet result;
 
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+		try {
+			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					javax.swing.UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (ClassNotFoundException ex) {
+			java.util.logging.Logger.getLogger(crearEstudiante.class.getName()).log(java.util.logging.Level.SEVERE,
+					null, ex);
+		} catch (InstantiationException ex) {
+			java.util.logging.Logger.getLogger(crearEstudiante.class.getName()).log(java.util.logging.Level.SEVERE,
+					null, ex);
+		} catch (IllegalAccessException ex) {
+			java.util.logging.Logger.getLogger(crearEstudiante.class.getName()).log(java.util.logging.Level.SEVERE,
+					null, ex);
+		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+			java.util.logging.Logger.getLogger(crearEstudiante.class.getName()).log(java.util.logging.Level.SEVERE,
+					null, ex);
+		}
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				crearEstudiante inst = new crearEstudiante();
@@ -68,9 +128,42 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		});
 	}
 
-	PreparedStatement pst;
-	Connection cn;
-	ResultSet result;
+	class DaemonThread implements Runnable {
+
+		protected volatile boolean runnable = false;
+
+		public void run() {
+			synchronized (this) {
+				while (runnable) {
+					if (webSource.grab()) {
+						try {
+							webSource.retrieve(frame);
+							Graphics g = jPanel1.getGraphics();
+							faceDetector.detectMultiScale(frame, faceDetections);
+							for (Rect rect : faceDetections.toArray()) {
+								// System.out.println("ttt");
+								Core.rectangle(frame, new Point(rect.x, rect.y),
+										new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
+							}
+							Highgui.imencode(".bmp", frame, mem);
+							Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
+							BufferedImage buff = (BufferedImage) im;
+							if (g.drawImage(buff, 0, 0, getWidth(), getHeight() - 150, 0, 0, buff.getWidth(),
+									buff.getHeight(), null)) {
+								if (runnable == false) {
+									System.out.println("Paused ..... ");
+									this.wait();
+								}
+							}
+						} catch (Exception ex) {
+							System.out.println("Error");
+						}
+					}
+				}
+			}
+		}
+
+	}
 
 	public crearEstudiante() {
 		super();
@@ -168,18 +261,53 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 				jButtonCrearEstudiante = new JButton();
 				getContentPane().add(jButtonCrearEstudiante);
 				jButtonCrearEstudiante.setText("Crear Estudiante");
-				jButtonCrearEstudiante.setBounds(384, 206, 100, 23);
+				jButtonCrearEstudiante.setBounds(384, 201, 142, 28);
 				jButtonCrearEstudiante.addActionListener(this);
 			}
 			{
 				jButtonAtras = new JButton();
 				getContentPane().add(jButtonAtras);
 				jButtonAtras.setText("Atras");
-				jButtonAtras.setBounds(451, 30, 41, 23);
+				jButtonAtras.setBounds(450, 32, 41, 23);
 				jButtonAtras.addActionListener(this);
 			}
+			{
+				jPanel1 = new JPanel();
+				getContentPane().add(jPanel1);
+				jPanel1.setBounds(560, 97, 375, 141);
+			}
+			{
+				jButtonTomarFoto = new JButton();
+				getContentPane().add(jButtonTomarFoto);
+				jButtonTomarFoto.setText("Tomar Fotos");
+				jButtonTomarFoto.setBounds(384, 146, 142, 26);
+				jButtonTomarFoto.addActionListener(this);
+				jButtonTomarFoto.setVisible(false);
+			}
+			{
+				jButtonAtras2 = new JButton();
+				getContentPane().add(jButtonAtras2);
+				jButtonAtras2.setText("Atras");
+				jButtonAtras2.setBounds(848, 348, 87, 33);
+				jButtonAtras2.addActionListener(this);
+			}
+			{
+				jButtonGuardarFotos = new JButton();
+				getContentPane().add(jButtonGuardarFotos);
+				jButtonGuardarFotos.setText("Guardar Fotos");
+				jButtonGuardarFotos.setBounds(736, 290, 122, 28);
+				jButtonGuardarFotos.addActionListener(this);
+			}
+			{
+				jButtonTerminar = new JButton();
+				getContentPane().add(jButtonTerminar);
+				jButtonTerminar.setText("Nuevo Estudiante");
+				jButtonTerminar.setBounds(636, 348, 178, 33);
+				jButtonTerminar.addActionListener(this);
+			}
 			pack();
-			this.setSize(534, 421);
+			// this.setSize(725, 424);
+			this.setSize(549, 424);
 		} catch (Exception e) {
 			// add your error handling code here
 			e.printStackTrace();
@@ -188,10 +316,66 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == jButtonAtras) {
+		if (e.getSource() == jButtonAtras || e.getSource() == jButtonAtras2) {
 			principalAdministrador p = new principalAdministrador();
 			p.setVisible(true);
 			this.dispose();
+		}
+
+		if (e.getSource() == jButtonTomarFoto) {
+			this.setSize(972, 430);
+			jButtonAtras.setVisible(false);
+			webSource = new VideoCapture(0); // video capture from default cam
+			myThread = new DaemonThread(); // create object of threat class
+			Thread t = new Thread(myThread);
+			t.setDaemon(true);
+			myThread.runnable = true;
+			t.start(); // start thread
+		}
+		if (e.getSource() == jButtonGuardarFotos) {
+			myThread.runnable = true;
+			String nombre = jTextFieldnombre.getText();
+			String apellido = jTextFieldApellidos.getText();
+			int documentoEstudiante = Integer.parseInt(jTextFieldDocumento.getText());
+
+			try {
+				String cap = "";
+				cn = dataConnection.conexion();
+
+				pst = (PreparedStatement) cn
+						.prepareStatement("INSERT INTO imagen(documentoEstudiante,nombre,foto) VALUES(?,?,?)");
+
+				// convertir la imagen capturada y guardarla en un archivo
+				// jpg
+				convertir(frame);
+
+				pst.setInt(1, documentoEstudiante);
+				pst.setString(2, "Foto" + "_" + apellido + "_" + nombre);
+				pst.setLong(3, frame.nativeObj);
+				pst.executeUpdate();
+				JOptionPane.showMessageDialog(null, "Foto Registrada");
+
+			} catch (SQLException e1) {
+				JOptionPane.showMessageDialog(null, "error");
+			} catch (FileNotFoundException ex) {
+				Logger.getLogger(crearEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (IOException ex) {
+				Logger.getLogger(crearEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		if (e.getSource() == jButtonTerminar) {
+			limpiar();
+			this.setSize(549, 424);
+			jButtonAtras.setVisible(true);
+			jButtonTomarFoto.setVisible(false);
+			jTextFieldApellidos.setEditable(true);
+			jTextFieldnombre.setEditable(true);
+			jTextFieldDocumento.setEditable(true);
+			jTextFieldGrado.setEditable(true);
+			jTextFieldMetodologia.setEditable(true);
+			jTextFieldSexo.setEditable(true);
+			jTextFieldTipoPoblacion.setEditable(true);
+
 		}
 		if (e.getSource() == jButtonCrearEstudiante) {
 			String nombres = jTextFieldnombre.getText();
@@ -226,7 +410,8 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 					}
 
 					JOptionPane.showMessageDialog(null, "El estudiante se ha agregado con exito");
-					limpiar();
+					setCampos();
+					jButtonTomarFoto.setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(null, "ups...ocurrio un problema");
 				}
@@ -253,6 +438,45 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		String date1 = "1999-05-24";
 		Date fecha = java.sql.Date.valueOf(date1);
 		return fecha;
+	}
+
+	public void setCampos() {
+		jTextFieldApellidos.setEditable(false);
+		jTextFieldnombre.setEditable(false);
+		jTextFieldDocumento.setEditable(false);
+		jTextFieldGrado.setEditable(false);
+		jTextFieldMetodologia.setEditable(false);
+		jTextFieldSexo.setEditable(false);
+		jTextFieldTipoPoblacion.setEditable(false);
+	}
+
+	/**
+	 * Metodo que permite guardar la imagen en un archivo jpg
+	 * 
+	 * @param imagen,
+	 *            imagen a guardar
+	 * @throws IOException
+	 */
+	private void convertir(Mat imagen) throws IOException {
+		MatOfByte matOfByte = new MatOfByte();
+		Highgui.imencode(".jpg", imagen, matOfByte);
+
+		byte[] byteArray = matOfByte.toArray();
+		int alto = 200;
+		int ancho = 200;
+		BufferedImage bufImage = new BufferedImage(alto, ancho, BufferedImage.TYPE_INT_RGB);
+		;
+
+		try {
+
+			InputStream in = new ByteArrayInputStream(byteArray);
+			bufImage = ImageIO.read(in);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		File file = new File("imagenes/theimage" + cont + ".png");
+		ImageIO.write((RenderedImage) (Image) bufImage, "png", file);
+		cont++;
 	}
 
 }
