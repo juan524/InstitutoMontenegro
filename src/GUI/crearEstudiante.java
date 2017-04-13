@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -73,6 +74,9 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	private JButton jButtonTomarFoto;
 	private JPanel jPanel1;
 	private JButton jButtonTerminar;
+	private JComboBox<String> jComboMetodologia;
+	private JComboBox<String> jComboSexo;
+	private JComboBox<String> jComboTipoPoblacion;
 	institutoMontenegro instituto = new institutoMontenegro();
 
 	// atributos necesarios para guardar imagenes en la base de datos
@@ -86,6 +90,10 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	CascadeClassifier faceDetector = new CascadeClassifier(
 			crearEstudiante.class.getResource("haarcascade_frontalface_alt.xml").getPath().substring(1));
 	MatOfRect faceDetections = new MatOfRect();
+
+	private String[] genero = { "FEMENINO", "MASCULINO" };;
+	private String[] metodologias = { "TRADICIONAL", "FLEXIBLE" };
+	private String[] tipoPoblacion = { "AFRO COLOMBIANO", "DESPLAZADOS", "INDIGENA", "OTRA", "N/A" };
 
 	// atributos para el manejo de la base de datos
 	PreparedStatement pst;
@@ -230,21 +238,18 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 				jLabelSexo.setText("SEXO");
 				jLabelSexo.setBounds(38, 270, 116, 16);
 			}
-			{
-				jTextFieldSexo = new JTextField();
-				getContentPane().add(jTextFieldSexo);
-				jTextFieldSexo.setBounds(189, 267, 160, 23);
-			}
+
 			{
 				jLabelMetodologia = new JLabel();
 				getContentPane().add(jLabelMetodologia);
 				jLabelMetodologia.setText("METODOLOGIA");
 				jLabelMetodologia.setBounds(38, 309, 84, 16);
 			}
+
 			{
-				jTextFieldMetodologia = new JTextField();
-				getContentPane().add(jTextFieldMetodologia);
-				jTextFieldMetodologia.setBounds(189, 306, 160, 23);
+				jComboMetodologia = new JComboBox<>(metodologias);
+				getContentPane().add(jComboMetodologia);
+				jComboMetodologia.setBounds(189, 306, 160, 23);
 			}
 			{
 				jLabelTipoPoblacion = new JLabel();
@@ -252,10 +257,11 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 				jLabelTipoPoblacion.setText("TIPO POBLACION");
 				jLabelTipoPoblacion.setBounds(38, 345, 151, 16);
 			}
+
 			{
-				jTextFieldTipoPoblacion = new JTextField();
-				getContentPane().add(jTextFieldTipoPoblacion);
-				jTextFieldTipoPoblacion.setBounds(189, 342, 160, 23);
+				jComboTipoPoblacion = new JComboBox<>(tipoPoblacion);
+				getContentPane().add(jComboTipoPoblacion);
+				jComboTipoPoblacion.setBounds(189, 342, 160, 23);
 			}
 			{
 				jButtonCrearEstudiante = new JButton();
@@ -263,6 +269,12 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 				jButtonCrearEstudiante.setText("Crear Estudiante");
 				jButtonCrearEstudiante.setBounds(384, 201, 142, 28);
 				jButtonCrearEstudiante.addActionListener(this);
+			}
+			{
+				jComboSexo = new JComboBox<>(genero);
+				getContentPane().add(jComboSexo);
+				// jComboSexo.setBounds(208, 302, 160, 23);
+				jComboSexo.setBounds(189, 267, 160, 23);
 			}
 			{
 				jButtonAtras = new JButton();
@@ -372,9 +384,9 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			jTextFieldnombre.setEditable(true);
 			jTextFieldDocumento.setEditable(true);
 			jTextFieldGrado.setEditable(true);
-			jTextFieldMetodologia.setEditable(true);
-			jTextFieldSexo.setEditable(true);
-			jTextFieldTipoPoblacion.setEditable(true);
+			jComboMetodologia.setEditable(true);
+			jComboSexo.setEditable(true);
+			jComboTipoPoblacion.setEditable(true);
 
 		}
 		if (e.getSource() == jButtonCrearEstudiante) {
@@ -382,43 +394,47 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			String apellidos = jTextFieldApellidos.getText();
 			int documento = Integer.parseInt(jTextFieldDocumento.getText());
 			String grado = jTextFieldGrado.getText();
-			String sexo = jTextFieldSexo.getText();
-			String tipoPoblacion = jTextFieldTipoPoblacion.getText();
-			String metodologia = jTextFieldMetodologia.getText();
+			String sexo = sexoF((String) jComboSexo.getSelectedItem());
+			String tipoPoblacion = (String) jComboTipoPoblacion.getSelectedItem();
+			String metodologia = (String) jComboMetodologia.getSelectedItem();
 
-			cn = dataConnection.conexion();
-			try {
-				pst = cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,"
-						+ "grado,sexo,tipoPoblacion,modeloPedagogico) values (?,?,?,?,?,?,?)");
+			// Validar que ingrese los campos obligatorios para registrarlo en
+			// la base de datos
+			if (nombres.length() != 0 && apellidos.length() != 0 && documento != 0 && grado.length() != 0) {
+				cn = dataConnection.conexion();
+				try {
+					pst = cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,"
+							+ "grado,sexo,tipoPoblacion,modeloPedagogico) values (?,?,?,?,?,?,?)");
 
-				pst.setInt(1, documento);
-				pst.setString(2, nombres);
-				pst.setString(3, apellidos);
-				pst.setString(4, grado);
-				pst.setString(5, sexo);
-				pst.setString(6, tipoPoblacion);
-				pst.setString(7, metodologia);
+					pst.setInt(1, documento);
+					pst.setString(2, nombres);
+					pst.setString(3, apellidos);
+					pst.setString(4, grado);
+					pst.setString(5, sexo);
+					pst.setString(6, tipoPoblacion);
+					pst.setString(7, metodologia);
 
-				int res = pst.executeUpdate();
-				if (res > 0) {
-					Date fecha = fechaIncio();
-					try {
-						instituto.insertarRegistro(documento, fecha, fecha);
-					} catch (ParseException e1) {
+					int res = pst.executeUpdate();
+					if (res > 0) {
+						Date fecha = fechaIncio();
+						try {
+							instituto.insertarRegistro(documento, fecha, fecha);
+						} catch (ParseException e1) {
 
-						e1.printStackTrace();
+							e1.printStackTrace();
+						}
+
+						JOptionPane.showMessageDialog(null, "El estudiante se ha agregado con exito");
+						setCampos();
+						jButtonTomarFoto.setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(null, "ups...ocurrio un problema");
 					}
+					cn.close();
+				} catch (SQLException e1) {
 
-					JOptionPane.showMessageDialog(null, "El estudiante se ha agregado con exito");
-					setCampos();
-					jButtonTomarFoto.setVisible(true);
-				} else {
-					JOptionPane.showMessageDialog(null, "ups...ocurrio un problema");
+					e1.printStackTrace();
 				}
-				cn.close();
-			} catch (SQLException e1) {
-
-				e1.printStackTrace();
 			}
 		}
 
@@ -445,9 +461,9 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		jTextFieldnombre.setEditable(false);
 		jTextFieldDocumento.setEditable(false);
 		jTextFieldGrado.setEditable(false);
-		jTextFieldMetodologia.setEditable(false);
-		jTextFieldSexo.setEditable(false);
-		jTextFieldTipoPoblacion.setEditable(false);
+		jComboMetodologia.setEditable(false);
+		jComboSexo.setEditable(false);
+		jComboTipoPoblacion.setEditable(false);
 	}
 
 	/**
@@ -477,6 +493,60 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		File file = new File("imagenes/theimage" + cont + ".png");
 		ImageIO.write((RenderedImage) (Image) bufImage, "png", file);
 		cont++;
+	}
+
+	/**
+	 * Metodo que permite validar si el char ingresado es numero
+	 * 
+	 * @param c
+	 * @return flag
+	 */
+	private boolean esNumero(char c) {
+		if (c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9'
+				|| c == '0') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Metodo que permite validar que los campos esten llenos
+	 */
+	public boolean validarCamposObligatorios(JTextField documento, JTextField nombre, JTextField apellidos,
+			JTextField grado) {
+
+		return false;
+	}
+
+	/**
+	 * Metodo que permite validar que el documento sea de 10 caracteres
+	 * 
+	 * @param documento
+	 * @return
+	 */
+	public boolean validarDocumento(String documento) {
+		boolean resultado = false;
+
+		if (documento.length() <= 11) {
+			for (int i = 0; i < documento.length(); i++) {
+				if (esNumero(documento.charAt(i))) {
+					resultado = true;
+				} else {
+					return false;
+				}
+			}
+
+		}
+		return resultado;
+	}
+
+	public String sexoF(String sexo){
+		if(sexo=="FEMENINO"){
+			return "F";
+		}else{
+			return "M";
+		}
 	}
 
 }
