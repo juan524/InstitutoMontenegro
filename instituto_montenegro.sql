@@ -1,5 +1,5 @@
 # Host: localhost  (Version 5.1.73-community)
-# Date: 2017-04-05 13:31:16
+# Date: 2017-04-17 11:52:58
 # Generator: MySQL-Front 5.3  (Build 5.39)
 
 /*!40101 SET NAMES latin1 */;
@@ -42,6 +42,7 @@ CREATE TABLE `estudiante` (
 # Data for table "estudiante"
 #
 
+INSERT INTO `estudiante` VALUES (123,'juan','alape','9','m','n/a','tra'),(12345,'alejandra','martos','11','F','N/A','Tradicional'),(90787,'juliana','moa','9-a','F','OTRA','TRADICIONAL'),(123456,'jose','eal','8-a','M','DESPLAZADOS','FLEXIBLE');
 
 #
 # Structure for table "imagen"
@@ -55,12 +56,13 @@ CREATE TABLE `imagen` (
   PRIMARY KEY (`Id`),
   KEY `documentoEstudiante` (`documentoEstudiante`),
   CONSTRAINT `documentoEstudiante` FOREIGN KEY (`documentoEstudiante`) REFERENCES `estudiante` (`documento`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 #
 # Data for table "imagen"
 #
 
+INSERT INTO `imagen` VALUES (1,12345,'Foto_martos_alejandra',X'3137333437393834');
 
 #
 # Structure for table "instituto_montenegro"
@@ -74,9 +76,10 @@ CREATE TABLE `instituto_montenegro` (
   PRIMARY KEY (`Nit`),
   KEY `documento_Estudiante` (`documentoEstudiante`),
   CONSTRAINT `documento_Estudiante` FOREIGN KEY (`documentoEstudiante`) REFERENCES `estudiante` (`documento`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 #
 # Data for table "instituto_montenegro"
 #
 
+INSERT INTO `instituto_montenegro` VALUES (2,123,'1999-05-24','2017-04-05'),(3,12345,'1999-05-24','2017-04-05'),(4,12345,'2017-04-05','2017-04-05'),(5,123456,'1999-05-24','1999-05-24'),(6,90787,'1999-05-24','1999-05-24');

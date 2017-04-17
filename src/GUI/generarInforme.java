@@ -1,17 +1,38 @@
 package GUI;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import javax.swing.WindowConstants;
 
 import com.toedter.calendar.JDateChooser;
+
+import Logic.dataConnection;
 
 import javax.swing.SwingUtilities;
 
@@ -35,12 +56,21 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 	private JLabel jLabelFechaFinal;
 	private JLabel jLabeltitulo;
 	private JButton jButtonSalir;
-	private JLabel jLabelFormatoFecha;
-	private JTextField jTextFieldFechaFinal;
-	private JTextField jTextFieldFechaInicail;
+
 	private JLabel jLabelDescripcion;
 	private JDateChooser jCalendarFechaFinal;
-	private JDateChooser jCalendarFechaInicail;
+	private JDateChooser jCalendarFechaInicial;
+
+	private Font fuenteNegra10 = new Font(FontFactory.getFont("arial", 10, Font.ITALIC, BaseColor.BLACK));
+	private Font fuente8 = new Font(FontFactory.getFont("TIMES_ROMAN", 8, Font.NORMAL, BaseColor.BLACK));
+	private Font fuenteAzul25 = new Font(FontFactory.getFont("TIMES_ROMAN", 25, Font.BOLD, BaseColor.BLUE));
+
+	BaseColor grisClaro = new BaseColor(230, 230, 230);
+	BaseColor azulClaro = new BaseColor(124, 195, 255);
+
+	PreparedStatement pst;
+	Connection cn;
+	ResultSet result;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -95,20 +125,11 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 				jLabelDescripcion.setText("Coloque las fechas, para generar el informe SEMANAL.");
 				jLabelDescripcion.setBounds(32, 41, 340, 39);
 			}
-			// {
-			// jTextFieldFechaInicail = new JTextField();
-			// getContentPane().add(jTextFieldFechaInicail);
-			// jTextFieldFechaInicail.setBounds(154, 103, 151, 23);
-			// }
-			// {
-			// jTextFieldFechaFinal = new JTextField();
-			// getContentPane().add(jTextFieldFechaFinal);
-			// jTextFieldFechaFinal.setBounds(154, 138, 151, 23);
-			// }
+
 			{
-				jCalendarFechaInicail = new JDateChooser();
-				getContentPane().add(jCalendarFechaInicail);
-				jCalendarFechaInicail.setBounds(154, 103, 151, 23);
+				jCalendarFechaInicial = new JDateChooser();
+				getContentPane().add(jCalendarFechaInicial);
+				jCalendarFechaInicial.setBounds(154, 103, 151, 23);
 			}
 			{
 				jCalendarFechaFinal = new JDateChooser();
@@ -133,12 +154,74 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==jButtonGenerarInforme){
-			Date fechaInicial=formatFecha(jCalendarFechaInicail.getDate());
-			Date fechaFinal=formatFecha(jCalendarFechaFinal.getDate());
-			
+		if (e.getSource() == jButtonGenerarInforme) {
+			Document documento = new Document();
+
+			Date fechaInicial = formatFecha(jCalendarFechaInicial.getDate());
+			Date fechaFinal = formatFecha(jCalendarFechaFinal.getDate());
+			cn = dataConnection.conexion();
+			try {
+				pst = cn.prepareStatement(
+						"select est.nombres,est.apellidos,est.tipoPoblacion, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE fechaIngreso between ? AND ? GROUP BY est.nombres;");
+				pst.setDate(1, (java.sql.Date) fechaInicial);
+				pst.setDate(2, (java.sql.Date) fechaFinal);
+				result = pst.executeQuery();
+
+				PdfWriter.getInstance(documento, new FileOutputStream("informe.pdf"));
+				documento.open();
+
+				documento.add(new Paragraph("Informe Semanal de asistencias \n"));
+				Paragraph saltoLinea=new Paragraph();
+				saltoLinea.add("\n\n");
+				documento.add(saltoLinea);
+				documento.add(saltoLinea);
+				// Anchos de las columnas
+				float anchosFilas[] = { 2f, 2f, 2f, 2f};
+				PdfPTable tabla = new PdfPTable(anchosFilas);
+				String rotulosColumnas[] = { "Nombres", "Apellidos", "tipo Poblacion", "asistencias Semanales" };
+				// Porcentaje que ocupa a lo ancho de la pagina del PDF
+				tabla.setWidthPercentage(100);
+				// Alineacion horizontal centrada
+				tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+				// agregar celda que ocupa las 4 columnas de los rotulos
+				PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Semanales"));
+				cell.setColspan(4);
+				// Centrar contenido de celda
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				// Color de fondo de la celda
+				 cell.setBackgroundColor(azulClaro);
+				tabla.addCell(cell);
+
+				for (int i = 0; i < rotulosColumnas.length; i++) {
+					cell = new PdfPCell(new Paragraph(rotulosColumnas[i]));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setBackgroundColor(grisClaro);
+					tabla.addCell(cell);
+				}
+				while (result.next()) {
+
+					cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+					tabla.addCell(cell);
+					cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+					tabla.addCell(cell);
+					cell = new PdfPCell(new Paragraph(result.getString("tipoPoblacion")));
+					tabla.addCell(cell);
+					cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+					tabla.addCell(cell);
+					
+				}
+				documento.add(tabla);
+				documento.close();
+				JOptionPane.showMessageDialog(null, "Informe Generado");
+				cn.close();
+			} catch (SQLException | FileNotFoundException | DocumentException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 		}
-		
+
 		if (e.getSource() == jButtonSalir) {
 			principalAdministrador p = new principalAdministrador();
 			p.setVisible(true);
@@ -152,6 +235,40 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 		fecha = java.sql.Date.valueOf(date1);
 		return fecha;
 
+	}
+
+	// agrega el contenido del documento; para este ejemplo agrega una tabla con
+	// datos y una imagen
+	// Espera como entrada el documento donde agregara el contenido
+	private void agregarContenido(Document document) throws DocumentException {
+		Paragraph ParrafoHoja = new Paragraph();
+
+		// Agregamos una linea en blanco al principio del documento
+		agregarLineasEnBlanco(ParrafoHoja, 1);
+
+		agregarLineasEnBlanco(ParrafoHoja, 1);
+		// 1.- AGREGAMOS LA TABLA
+//		agregarTabla(ParrafoHoja);
+		// Agregar 2 lineas en blanco
+		agregarLineasEnBlanco(ParrafoHoja, 2);
+		// // 2.- AGREGAMOS LA IMAGEN
+		// try {
+		// Image im = Image.getInstance("logo_mysql.gif");
+		// im.setAlignment(Image.ALIGN_CENTER | Image.TEXTWRAP);
+		// im.setWidthPercentage(50);
+		// ParrafoHoja.add(im);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+
+		document.add(ParrafoHoja);
+
+	}
+
+	// Agrega las lineas en blanco especificadas a un parrafo especificado
+	private static void agregarLineasEnBlanco(Paragraph parrafo, int nLineas) {
+		for (int i = 0; i < nLineas; i++)
+			parrafo.add(new Paragraph(" "));
 	}
 
 }
