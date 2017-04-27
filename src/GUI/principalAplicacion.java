@@ -1,4 +1,5 @@
 package GUI;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -6,22 +7,22 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import javax.swing.WindowConstants;
+
+import org.opencv.core.Core;
+
 import javax.swing.SwingUtilities;
 
-
 /**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
-public class principalAplicacion extends javax.swing.JFrame implements ActionListener{
+ * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
+ * Builder, which is free for non-commercial use. If Jigloo is being used
+ * commercially (ie, by a corporation, company or business for any purpose
+ * whatever) then you should purchase a license for each developer using Jigloo.
+ * Please visit www.cloudgarden.com for details. Use of Jigloo implies
+ * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
+ * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
+ * ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
+public class principalAplicacion extends javax.swing.JFrame implements ActionListener {
 	/**
 	 * 
 	 */
@@ -32,9 +33,10 @@ public class principalAplicacion extends javax.swing.JFrame implements ActionLis
 	private JButton jButtonAdministrador;
 
 	/**
-	* Auto-generated main method to display this JFrame
-	*/
+	 * Auto-generated main method to display this JFrame
+	 */
 	public static void main(String[] args) {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				principalAplicacion inst = new principalAplicacion();
@@ -43,12 +45,12 @@ public class principalAplicacion extends javax.swing.JFrame implements ActionLis
 			}
 		});
 	}
-	
+
 	public principalAplicacion() {
 		super();
 		initGUI();
 	}
-	
+
 	private void initGUI() {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -82,24 +84,24 @@ public class principalAplicacion extends javax.swing.JFrame implements ActionLis
 			pack();
 			setSize(400, 300);
 		} catch (Exception e) {
-		    //add your error handling code here
+			// add your error handling code here
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==jButtonAdministrador){
-			LogInAdmin login= new LogInAdmin();
+		if (e.getSource() == jButtonAdministrador) {
+			LogInAdmin login = new LogInAdmin();
 			login.setVisible(true);
 			this.dispose();
 		}
-		if(e.getSource()==jButtonEstudiante){
-			logInEstudiante login1=new logInEstudiante();
+		if (e.getSource() == jButtonEstudiante) {
+			logInEstudiante login1 = new logInEstudiante();
 			login1.setVisible(true);
 			this.dispose();
 		}
-		
+
 	}
 
 }

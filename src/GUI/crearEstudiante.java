@@ -54,13 +54,10 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	private static final long serialVersionUID = 1L;
 	private JLabel jLabelTitulo;
 	private JButton jButtonCrearEstudiante;
-	private JTextField jTextFieldTipoPoblacion;
 	private JLabel jLabelTipoPoblacion;
 	private JLabel jLabelDocumento;
 	private JLabel jLabelSexo;
-	private JTextField jTextFieldMetodologia;
 	private JLabel jLabelMetodologia;
-	private JTextField jTextFieldSexo;
 	private JTextField jTextFieldGrado;
 	private JLabel jLabelGrado;
 	private JTextField jTextFieldDocumento;
@@ -85,7 +82,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	// Variable de incremento
 	int cont = 0;
 	VideoCapture webSource = null;
-	Mat frame = new Mat();
+	private Mat frame = new Mat();
 	MatOfByte mem = new MatOfByte();
 	CascadeClassifier faceDetector = new CascadeClassifier(
 			crearEstudiante.class.getResource("haarcascade_frontalface_alt.xml").getPath().substring(1));
@@ -286,7 +283,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			{
 				jPanel1 = new JPanel();
 				getContentPane().add(jPanel1);
-				jPanel1.setBounds(560, 97, 375, 141);
+				jPanel1.setBounds(560, 12, 678, 240);
 			}
 			{
 				jButtonTomarFoto = new JButton();
@@ -300,21 +297,21 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 				jButtonAtras2 = new JButton();
 				getContentPane().add(jButtonAtras2);
 				jButtonAtras2.setText("Atras");
-				jButtonAtras2.setBounds(848, 348, 87, 33);
+				jButtonAtras2.setBounds(1182, 357, 87, 33);
 				jButtonAtras2.addActionListener(this);
 			}
 			{
 				jButtonGuardarFotos = new JButton();
 				getContentPane().add(jButtonGuardarFotos);
 				jButtonGuardarFotos.setText("Guardar Fotos");
-				jButtonGuardarFotos.setBounds(736, 290, 122, 28);
+				jButtonGuardarFotos.setBounds(843, 270, 122, 28);
 				jButtonGuardarFotos.addActionListener(this);
 			}
 			{
 				jButtonTerminar = new JButton();
 				getContentPane().add(jButtonTerminar);
 				jButtonTerminar.setText("Nuevo Estudiante");
-				jButtonTerminar.setBounds(636, 348, 178, 33);
+				jButtonTerminar.setBounds(818, 345, 178, 33);
 				jButtonTerminar.addActionListener(this);
 			}
 			pack();
@@ -335,8 +332,11 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		}
 
 		if (e.getSource() == jButtonTomarFoto) {
-			this.setSize(972, 430);
+			setCampos();
+			this.setSize(1300, 430);
 			jButtonAtras.setVisible(false);
+			jButtonTomarFoto.setVisible(false);
+			jButtonCrearEstudiante.setVisible(false);
 			webSource = new VideoCapture(0); // video capture from default cam
 			myThread = new DaemonThread(); // create object of threat class
 			Thread t = new Thread(myThread);
@@ -351,7 +351,6 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			int documentoEstudiante = Integer.parseInt(jTextFieldDocumento.getText());
 
 			try {
-				String cap = "";
 				cn = dataConnection.conexion();
 
 				pst = (PreparedStatement) cn
@@ -377,6 +376,8 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		}
 		if (e.getSource() == jButtonTerminar) {
 			limpiar();
+
+			myThread.runnable = false;
 			this.setSize(549, 424);
 			jButtonAtras.setVisible(true);
 			jButtonTomarFoto.setVisible(false);
@@ -387,6 +388,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			jComboMetodologia.setEditable(true);
 			jComboSexo.setEditable(true);
 			jComboTipoPoblacion.setEditable(true);
+			jButtonCrearEstudiante.setVisible(true);
 
 		}
 		if (e.getSource() == jButtonCrearEstudiante) {
@@ -445,9 +447,6 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		jTextFieldnombre.setText(" ");
 		jTextFieldDocumento.setText(" ");
 		jTextFieldGrado.setText(" ");
-		jTextFieldMetodologia.setText(" ");
-		jTextFieldSexo.setText(" ");
-		jTextFieldTipoPoblacion.setText(" ");
 	}
 
 	public Date fechaIncio() {
@@ -490,9 +489,9 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		File file = new File("imagenes/theimage" + cont + ".png");
+		File file = new File("imagenes/foto" + cont + ".png");
 		ImageIO.write((RenderedImage) (Image) bufImage, "png", file);
-		cont++;
+		cont += 1;
 	}
 
 	/**
@@ -541,10 +540,10 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		return resultado;
 	}
 
-	public String sexoF(String sexo){
-		if(sexo=="FEMENINO"){
+	public String sexoF(String sexo) {
+		if (sexo == "FEMENINO") {
 			return "F";
-		}else{
+		} else {
 			return "M";
 		}
 	}

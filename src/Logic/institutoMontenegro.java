@@ -68,8 +68,6 @@ public class institutoMontenegro {
 		String date1 = format1.format(cal.getTime());
 		fecha = java.sql.Date.valueOf(date1);
 
-		System.out.println(date1);
-		System.out.println(fecha);
 		return (java.sql.Date) fecha;
 
 	}
@@ -125,12 +123,13 @@ public class institutoMontenegro {
 		return ultimoIngreso;
 	}
 
-	public void actualizarUltimoIngreso(Date fechaHoy) {
+	public void actualizarUltimoIngreso(Date fechaHoy, int documento) {
 
 		cn = dataconnection.conexion();
 		try {
-			pst = cn.prepareStatement("update instituto_montenegro set ultimoIngreso=?");
+			pst = cn.prepareStatement("update instituto_montenegro set ultimoIngreso=? WHERE documentoEstudiante=?");
 			pst.setDate(1, (java.sql.Date) fechaHoy);
+			pst.setInt(2, documento);
 			int rst = pst.executeUpdate();
 			if (rst > 0) {
 				System.out.println("correcto");

@@ -124,7 +124,7 @@ public class logInEstudiante extends javax.swing.JFrame implements ActionListene
 				fecha = (Date) instituto.fechaHoy();
 				ultimoIngresoFecha = (Date) instituto.ultimaFechaIngreso(documento);
 
-				instituto.actualizarUltimoIngreso(fecha);
+				instituto.actualizarUltimoIngreso(fecha,documento);
 				cn = dataConnection.conexion();
 				try {
 					pst = cn.prepareStatement("select * from estudiante where documento=?");

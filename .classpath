@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="D:/JKD/mysql-connector-java-5.1.41/mysql-connector-java-5.1.41/mysql-connector-java-5.1.41-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/openCv 2.4.13"/>
 	<classpathentry kind="lib" path="D:/JKD/jcalendar-1.4/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="D:/JKD/itext-5.5.4/itextpdf-5.5.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

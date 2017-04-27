@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 
 import javax.swing.WindowConstants;
 
+import org.opencv.core.Core;
+
 import Logic.dataConnection;
 
 import javax.swing.SwingUtilities;
@@ -47,6 +49,8 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
+		
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				LogInAdmin inst = new LogInAdmin();

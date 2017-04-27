@@ -7,6 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import javax.swing.WindowConstants;
+
+import org.opencv.core.Core;
+
 import javax.swing.SwingUtilities;
 
 /**
@@ -19,8 +22,7 @@ import javax.swing.SwingUtilities;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-public class principalAdministrador extends javax.swing.JFrame implements
-		ActionListener {
+public class principalAdministrador extends javax.swing.JFrame implements ActionListener {
 	/**
 	 * 
 	 */
@@ -38,6 +40,8 @@ public class principalAdministrador extends javax.swing.JFrame implements
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
+
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				principalAdministrador inst = new principalAdministrador();
@@ -151,8 +155,8 @@ public class principalAdministrador extends javax.swing.JFrame implements
 			m.setVisible(true);
 			this.dispose();
 		}
-		if(e.getSource()==jButtonGenerarInforme){
-			generarInforme m=new generarInforme();
+		if (e.getSource() == jButtonGenerarInforme) {
+			generarInforme m = new generarInforme();
 			m.setVisible(true);
 			this.dispose();
 		}
