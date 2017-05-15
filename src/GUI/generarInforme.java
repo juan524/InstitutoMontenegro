@@ -1,6 +1,7 @@
 package GUI;
 
-import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -16,15 +17,13 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -35,6 +34,7 @@ import com.toedter.calendar.JDateChooser;
 import Logic.dataConnection;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -61,9 +61,6 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 	private JDateChooser jCalendarFechaFinal;
 	private JDateChooser jCalendarFechaInicial;
 
-	private Font fuenteNegra10 = new Font(FontFactory.getFont("arial", 10, Font.ITALIC, BaseColor.BLACK));
-	private Font fuente8 = new Font(FontFactory.getFont("TIMES_ROMAN", 8, Font.NORMAL, BaseColor.BLACK));
-	private Font fuenteAzul25 = new Font(FontFactory.getFont("TIMES_ROMAN", 25, Font.BOLD, BaseColor.BLUE));
 
 	BaseColor grisClaro = new BaseColor(230, 230, 230);
 	BaseColor azulClaro = new BaseColor(124, 195, 255);
@@ -76,6 +73,11 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				generarInforme inst = new generarInforme();
@@ -87,18 +89,23 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 
 	public generarInforme() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
 	}
 
 	private void initGUI() {
 		try {
+			setTitle("PAE Instituto Montenegro-Generar Informe");
+			setLocation(400,250);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			{
 				jButtonGenerarInforme = new JButton();
 				getContentPane().add(jButtonGenerarInforme);
 				jButtonGenerarInforme.setText("Generar Informe");
-				jButtonGenerarInforme.setBounds(146, 188, 100, 23);
+				jButtonGenerarInforme.setBounds(120, 188, 150, 23);
 				jButtonGenerarInforme.addActionListener(this);
 			}
 			{
@@ -129,19 +136,20 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 			{
 				jCalendarFechaInicial = new JDateChooser();
 				getContentPane().add(jCalendarFechaInicial);
-				jCalendarFechaInicial.setBounds(154, 103, 151, 23);
+				jCalendarFechaInicial.setBounds(154, 103, 151, 25);
 			}
 			{
 				jCalendarFechaFinal = new JDateChooser();
 				getContentPane().add(jCalendarFechaFinal);
-				jCalendarFechaFinal.setBounds(154, 138, 151, 23);
+				jCalendarFechaFinal.setBounds(154, 138, 151, 25);
 			}
 
 			{
 				jButtonSalir = new JButton();
 				getContentPane().add(jButtonSalir);
-				jButtonSalir.setText("Salir");
-				jButtonSalir.setBounds(329, 204, 36, 23);
+				jButtonSalir.setIcon(new ImageIcon(LogInAdmin.class.getResource("/imagen/atras.png")));
+				jButtonSalir.setBorderPainted(false);
+				jButtonSalir.setBounds(329, 180, 40, 40);
 				jButtonSalir.addActionListener(this);
 			}
 			pack();
@@ -223,8 +231,6 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 		}
 
 		if (e.getSource() == jButtonSalir) {
-			principalAdministrador p = new principalAdministrador();
-			p.setVisible(true);
 			this.dispose();
 		}
 	}
@@ -237,21 +243,24 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 
 	}
 
-	// agrega el contenido del documento; para este ejemplo agrega una tabla con
-	// datos y una imagen
-	// Espera como entrada el documento donde agregara el contenido
+	/*agrega el contenido del documento; para este ejemplo agrega una tabla con
+	* datos y una imagen
+	* Espera como entrada el documento donde agregara el contenido
+	*/
 	private void agregarContenido(Document document) throws DocumentException {
 		Paragraph ParrafoHoja = new Paragraph();
 
-		// Agregamos una linea en blanco al principio del documento
+		/*Agregamos una linea en blanco al principio del documento
+		 */
 		agregarLineasEnBlanco(ParrafoHoja, 1);
 
 		agregarLineasEnBlanco(ParrafoHoja, 1);
-		// 1.- AGREGAMOS LA TABLA
-//		agregarTabla(ParrafoHoja);
-		// Agregar 2 lineas en blanco
+		/* 1.- AGREGAMOS LA TABLA
+		 * agregarTabla(ParrafoHoja);
+		 * Agregar 2 lineas en blanco 
+		 */
 		agregarLineasEnBlanco(ParrafoHoja, 2);
-		// // 2.- AGREGAMOS LA IMAGEN
+		/* 2.- AGREGAMOS LA IMAGEN */
 		// try {
 		// Image im = Image.getInstance("logo_mysql.gif");
 		// im.setAlignment(Image.ALIGN_CENTER | Image.TEXTWRAP);
@@ -265,7 +274,7 @@ public class generarInforme extends javax.swing.JFrame implements ActionListener
 
 	}
 
-	// Agrega las lineas en blanco especificadas a un parrafo especificado
+	/* Agrega las lineas en blanco especificadas a un parrafo especificado */
 	private static void agregarLineasEnBlanco(Paragraph parrafo, int nLineas) {
 		for (int i = 0; i < nLineas; i++)
 			parrafo.add(new Paragraph(" "));

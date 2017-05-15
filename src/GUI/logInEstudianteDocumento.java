@@ -1,5 +1,7 @@
 package GUI;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,7 +34,7 @@ import javax.swing.SwingUtilities;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-public class logInEstudiante extends javax.swing.JFrame implements ActionListener {
+public class logInEstudianteDocumento extends javax.swing.JFrame implements ActionListener {
 	/**
 	 * 
 	 */
@@ -53,20 +56,25 @@ public class logInEstudiante extends javax.swing.JFrame implements ActionListene
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				logInEstudiante inst = new logInEstudiante();
+				logInEstudianteDocumento inst = new logInEstudianteDocumento();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
 	}
 
-	public logInEstudiante() {
+	public logInEstudianteDocumento() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
 	}
 
 	private void initGUI() {
 		try {
+			setTitle("PAE Instituto Montenegro-Ingreso Estudiante");
+			setLocation(400, 250);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			{
@@ -96,8 +104,9 @@ public class logInEstudiante extends javax.swing.JFrame implements ActionListene
 			{
 				jButtonSalir = new JButton();
 				getContentPane().add(jButtonSalir);
-				jButtonSalir.setText("Salir");
-				jButtonSalir.setBounds(337, 228, 36, 23);
+				jButtonSalir.setIcon(new ImageIcon(LogInAdmin.class.getResource("/imagen/atras.png")));
+				jButtonSalir.setBorderPainted(false);
+				jButtonSalir.setBounds(337, 210, 40,40);
 				jButtonSalir.addActionListener(this);
 			}
 			pack();

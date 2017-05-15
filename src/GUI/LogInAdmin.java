@@ -1,5 +1,7 @@
 package GUI;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -7,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,6 +23,7 @@ import org.opencv.core.Core;
 import Logic.dataConnection;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -49,8 +53,13 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
-		
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		/*estilo de ventana*/
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				LogInAdmin inst = new LogInAdmin();
@@ -66,11 +75,15 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 
 	public LogInAdmin() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
 	}
 
 	private void initGUI() {
 		try {
+			setLocation(400, 250);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			{
@@ -83,42 +96,42 @@ public class LogInAdmin extends javax.swing.JFrame implements ActionListener {
 				jLabelIntro = new JLabel();
 				getContentPane().add(jLabelIntro);
 				jLabelIntro.setText("Ingrese el nick del administrador y su contraseña");
-				jLabelIntro.setBounds(22, 77, 350, 26);
+				jLabelIntro.setBounds(60, 77, 360, 26);
 			}
 			{
 				jLabelNickname = new JLabel();
 				getContentPane().add(jLabelNickname);
 				jLabelNickname.setText("Nickname");
-				jLabelNickname.setBounds(22, 130, 118, 23);
+				jLabelNickname.setBounds(22, 130, 118, 30);
 			}
 			{
 				jTextFieldNickname = new JTextField();
 				getContentPane().add(jTextFieldNickname);
-				jTextFieldNickname.setBounds(173, 130, 155, 23);
+				jTextFieldNickname.setBounds(173, 130, 160, 30);
 			}
 			{
 				jLabelPassword = new JLabel();
 				getContentPane().add(jLabelPassword);
 				jLabelPassword.setText("Contraseña:");
-				jLabelPassword.setBounds(22, 175, 118, 16);
+				jLabelPassword.setBounds(22, 175, 118, 30);
 			}
 			{
 				jPasswordFieldContrasena = new JPasswordField();
 				getContentPane().add(jPasswordFieldContrasena);
-				jPasswordFieldContrasena.setBounds(173, 172, 155, 23);
+				jPasswordFieldContrasena.setBounds(173, 172, 160, 30);
 			}
 			{
 				jButtonIngresar = new JButton();
 				getContentPane().add(jButtonIngresar);
 				jButtonIngresar.setText("Ingresar");
-				jButtonIngresar.setBounds(140, 218, 138, 26);
+				jButtonIngresar.setBounds(140, 218, 138, 30);
 				jButtonIngresar.addActionListener(this);
 			}
 			{
 				jButtonAtras = new JButton();
+				jButtonAtras.setIcon(new ImageIcon(LogInAdmin.class.getResource("/imagen/atras.png")));
 				getContentPane().add(jButtonAtras);
-				jButtonAtras.setText("Salir");
-				jButtonAtras.setBounds(315, 12, 36, 23);
+				jButtonAtras.setBounds(315, 12, 36, 30);
 				jButtonAtras.addActionListener(this);
 			}
 			pack();

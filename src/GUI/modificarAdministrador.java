@@ -1,5 +1,7 @@
 package GUI;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -7,9 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import javax.swing.WindowConstants;
@@ -17,6 +21,7 @@ import javax.swing.WindowConstants;
 import Logic.dataConnection;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -34,7 +39,7 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 	private JButton jButtonBuscar;
 	private JButton jButtonModificar;
 	private JLabel jLabelPassword;
-	private JTextField jTextFieldPassword;
+	private JPasswordField jPasswordField;
 	private JTextField jTextFieldApellidos;
 	private JLabel jLabelApellidos;
 	private JTextField jTextFieldnombres;
@@ -48,6 +53,11 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				modificarAdministrador inst = new modificarAdministrador();
@@ -63,11 +73,16 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 
 	public modificarAdministrador() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
 	}
 
 	private void initGUI() {
 		try {
+			setTitle("PAE Instituto Montenegro-Modificar Informacion Admin");
+			setLocation(400, 250);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			{
@@ -91,18 +106,18 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 			{
 				jTextFieldNickname = new JTextField();
 				getContentPane().add(jTextFieldNickname);
-				jTextFieldNickname.setBounds(161, 98, 149, 23);
+				jTextFieldNickname.setBounds(161, 98, 149, 28);
 			}
 			{
 				jLabelNombres = new JLabel();
 				getContentPane().add(jLabelNombres);
 				jLabelNombres.setText("nombre(s):");
-				jLabelNombres.setBounds(31, 140, 100, 23);
+				jLabelNombres.setBounds(31, 140, 100, 28);
 			}
 			{
 				jTextFieldnombres = new JTextField();
 				getContentPane().add(jTextFieldnombres);
-				jTextFieldnombres.setBounds(161, 140, 149, 23);
+				jTextFieldnombres.setBounds(161, 140, 149, 28);
 			}
 			{
 				jLabelApellidos = new JLabel();
@@ -113,7 +128,7 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 			{
 				jTextFieldApellidos = new JTextField();
 				getContentPane().add(jTextFieldApellidos);
-				jTextFieldApellidos.setBounds(161, 172, 149, 23);
+				jTextFieldApellidos.setBounds(161, 172, 149, 28);
 			}
 			{
 				jLabelPassword = new JLabel();
@@ -122,9 +137,9 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 				jLabelPassword.setBounds(31, 215, 55, 16);
 			}
 			{
-				jTextFieldPassword = new JTextField();
-				getContentPane().add(jTextFieldPassword);
-				jTextFieldPassword.setBounds(161, 212, 149, 23);
+				jPasswordField = new JPasswordField();
+				getContentPane().add(jPasswordField);
+				jPasswordField.setBounds(161, 212, 149, 28);
 			}
 			{
 				jButtonBuscar = new JButton();
@@ -143,12 +158,13 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 			{
 				jButtonAtras = new JButton();
 				getContentPane().add(jButtonAtras);
-				jButtonAtras.setText("Atras");
-				jButtonAtras.setBounds(379, 12, 41, 23);
+				jButtonAtras.setIcon(new ImageIcon(LogInAdmin.class.getResource("/imagen/atras.png")));
+				jButtonAtras.setBorderPainted(false);
+				jButtonAtras.setBounds(379, 12, 40, 40);
 				jButtonAtras.addActionListener(this);
 			}
 			pack();
-			this.setSize(465, 175);
+			this.setSize(465, 180);
 		} catch (Exception e) {
 			// add your error handling code here
 			e.printStackTrace();
@@ -178,7 +194,7 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 					jLabelNickname.setVisible(true);
 					jTextFieldNickname.setEditable(false);
 
-					jTextFieldPassword.setEditable(true);
+					jPasswordField.setEditable(true);
 
 					jButtonBuscar.setVisible(false);
 				} else {
@@ -193,10 +209,12 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 		}
 		if (e.getSource() == jButtonModificar) {
 			cn = dataConnection.conexion();
+			char[] arrayC = jPasswordField.getPassword();
+			String contraseña = new String(arrayC);
 			try {
 
 				pst = cn.prepareStatement("update administrador set password=?,nombres=?,apellidos=? where nickname=?");
-				pst.setString(1, jTextFieldPassword.getText());
+				pst.setString(1, contraseña);
 				pst.setString(2, jTextFieldnombres.getText());
 				pst.setString(3, jTextFieldApellidos.getText());
 				pst.setString(4, jTextFieldNickname.getText());
@@ -211,8 +229,6 @@ public class modificarAdministrador extends javax.swing.JFrame implements Action
 			}
 		}
 		if (e.getSource() == jButtonAtras) {
-			principalAdministrador p = new principalAdministrador();
-			p.setVisible(true);
 			this.dispose();
 		}
 	}

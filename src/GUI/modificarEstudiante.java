@@ -1,5 +1,7 @@
 package GUI;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -7,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,6 +20,7 @@ import javax.swing.WindowConstants;
 import Logic.dataConnection;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -57,6 +61,11 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				modificarEstudiante inst = new modificarEstudiante();
@@ -72,11 +81,16 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 
 	public modificarEstudiante() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
 	}
 
 	private void initGUI() {
 		try {
+			setTitle("PAE Instituto Montenegro-Modificar estudiante");
+			setLocation(400, 250);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			{
@@ -100,7 +114,7 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 			{
 				jTextFieldDocumento = new JTextField();
 				getContentPane().add(jTextFieldDocumento);
-				jTextFieldDocumento.setBounds(161, 98, 149, 23);
+				jTextFieldDocumento.setBounds(161, 98, 149, 25);
 			}
 			{
 				jLabelNombres = new JLabel();
@@ -112,7 +126,7 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 			{
 				jTextFieldnombres = new JTextField();
 				getContentPane().add(jTextFieldnombres);
-				jTextFieldnombres.setBounds(161, 140, 149, 23);
+				jTextFieldnombres.setBounds(161, 140, 149, 25);
 				jTextFieldnombres.setVisible(false);
 			}
 			{
@@ -125,7 +139,7 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 			{
 				jTextFieldApellidos = new JTextField();
 				getContentPane().add(jTextFieldApellidos);
-				jTextFieldApellidos.setBounds(161, 172, 149, 23);
+				jTextFieldApellidos.setBounds(161, 172, 149, 25);
 				jTextFieldApellidos.setVisible(false);
 			}
 			{
@@ -138,7 +152,7 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 			{
 				jTextFieldGrado = new JTextField();
 				getContentPane().add(jTextFieldGrado);
-				jTextFieldGrado.setBounds(161, 209, 149, 23);
+				jTextFieldGrado.setBounds(161, 209, 149, 25);
 				jTextFieldGrado.setVisible(false);
 			}
 			{
@@ -151,7 +165,7 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 			{
 				jTextFieldSexo = new JTextField();
 				getContentPane().add(jTextFieldSexo);
-				jTextFieldSexo.setBounds(161, 244, 149, 23);
+				jTextFieldSexo.setBounds(161, 244, 149, 25);
 				jTextFieldSexo.setVisible(false);
 			}
 			{
@@ -164,7 +178,7 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 			{
 				jTextFieldTipoPoblacion = new JTextField();
 				getContentPane().add(jTextFieldTipoPoblacion);
-				jTextFieldTipoPoblacion.setBounds(162, 284, 148, 23);
+				jTextFieldTipoPoblacion.setBounds(162, 284, 148, 25);
 				jTextFieldTipoPoblacion.setVisible(false);
 			}
 			{
@@ -177,7 +191,7 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 			{
 				jTextFieldMetodologia = new JTextField();
 				getContentPane().add(jTextFieldMetodologia);
-				jTextFieldMetodologia.setBounds(162, 323, 148, 23);
+				jTextFieldMetodologia.setBounds(162, 323, 148, 25);
 				jTextFieldMetodologia.setVisible(false);
 			}
 			{
@@ -191,14 +205,15 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 				jButtonModificar = new JButton();
 				getContentPane().add(jButtonModificar);
 				jButtonModificar.setText("Modificar Estudiante");
-				jButtonModificar.setBounds(151, 383, 123, 23);
+				jButtonModificar.setBounds(130, 370, 140, 30);
 				jButtonModificar.addActionListener(this);
 			}
 			{
 				jButtonAtras = new JButton();
 				getContentPane().add(jButtonAtras);
-				jButtonAtras.setText("Atras");
-				jButtonAtras.setBounds(389, 12, 41, 23);
+				jButtonAtras.setIcon(new ImageIcon(LogInAdmin.class.getResource("/imagen/atras.png")));
+				jButtonAtras.setBorderPainted(false);
+				jButtonAtras.setBounds(389, 12, 40, 40);
 				jButtonAtras.addActionListener(this);
 			}
 			pack();
@@ -284,8 +299,6 @@ public class modificarEstudiante extends javax.swing.JFrame implements ActionLis
 			}
 		}
 		if (e.getSource() == jButtonAtras) {
-			principalAdministrador p = new principalAdministrador();
-			p.setVisible(true);
 			this.dispose();
 		}
 	}

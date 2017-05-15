@@ -1,16 +1,19 @@
 package GUI;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-
+import javax.swing.JFrame;
+import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
 import org.opencv.core.Core;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -22,13 +25,13 @@ import javax.swing.SwingUtilities;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-public class principalAdministrador extends javax.swing.JFrame implements ActionListener {
+public class principalAdministrador extends JFrame implements ActionListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private JToolBar jToolBar1;
 	private JButton jButtonBuscarEstudiante;
-	private JLabel jLabelDescripcion;
 	private JButton jButtonEliminarEstudiante;
 	private JButton jButtonSalir;
 	private JButton jButtonGenerarInforme;
@@ -40,8 +43,13 @@ public class principalAdministrador extends javax.swing.JFrame implements Action
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
-
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		/* estilo de la ventana*/
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				principalAdministrador inst = new principalAdministrador();
@@ -50,73 +58,80 @@ public class principalAdministrador extends javax.swing.JFrame implements Action
 			}
 		});
 	}
-
+	/** Creacion de nueva ventana principal*/
 	public principalAdministrador() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
+		
+		setTitle("PAE INSTITUTO MONTENEGRO-Administrador");
+		this.setVisible(true);
 	}
 
 	private void initGUI() {
 		try {
+			setLocation(400, 20);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			getContentPane().setLayout(null);
+			
+			jToolBar1 = new JToolBar();
+			jToolBar1.setBounds(0, 0, 1500, 50);
+			getContentPane().add(jToolBar1);
 			{
+				jToolBar1.addSeparator();
+				jButtonAgregarEstudiante = new JButton();
+				jButtonAgregarEstudiante.setText("Agregar Estudiante");
+				jButtonAgregarEstudiante.addActionListener(this);
+				jToolBar1.add(jButtonAgregarEstudiante);
+			}
+			{
+				jToolBar1.addSeparator();
 				jButtonBuscarEstudiante = new JButton();
-				getContentPane().add(jButtonBuscarEstudiante);
 				jButtonBuscarEstudiante.setText("Buscar Estudiante");
-				jButtonBuscarEstudiante.setBounds(23, 61, 172, 49);
 				jButtonBuscarEstudiante.addActionListener(this);
+				jToolBar1.add(jButtonBuscarEstudiante);
 			}
 			{
-				jLabelDescripcion = new JLabel();
-				getContentPane().add(jLabelDescripcion);
-				jLabelDescripcion.setText("Que deseas hacer...");
-				jLabelDescripcion.setBounds(138, 12, 178, 29);
-			}
-			{
+				jToolBar1.addSeparator();
 				jButtonModificarEstudiante = new JButton();
 				getContentPane().add(jButtonModificarEstudiante);
 				jButtonModificarEstudiante.setText("Modificar Estudiante");
-				jButtonModificarEstudiante.setBounds(206, 130, 172, 49);
 				jButtonModificarEstudiante.addActionListener(this);
+				jToolBar1.add(jButtonModificarEstudiante);
 			}
 			{
+				jToolBar1.addSeparator();
 				jButtonEliminarEstudiante = new JButton();
-				getContentPane().add(jButtonEliminarEstudiante);
 				jButtonEliminarEstudiante.setText("Eliminar Estudiante");
-				jButtonEliminarEstudiante.setBounds(206, 61, 172, 49);
 				jButtonEliminarEstudiante.addActionListener(this);
+				jToolBar1.add(jButtonEliminarEstudiante);
 			}
 			{
-				jButtonAgregarEstudiante = new JButton();
-				getContentPane().add(jButtonAgregarEstudiante);
-				jButtonAgregarEstudiante.setText("Agregar Estudiante");
-				jButtonAgregarEstudiante.setBounds(23, 130, 172, 49);
-				jButtonAgregarEstudiante.addActionListener(this);
-			}
-			{
+				jToolBar1.addSeparator();
 				jButtonModificarAdmin = new JButton();
 				getContentPane().add(jButtonModificarAdmin);
 				jButtonModificarAdmin.setText("Modificar mi Informacion");
-				jButtonModificarAdmin.setBounds(23, 196, 246, 48);
 				jButtonModificarAdmin.addActionListener(this);
+				jToolBar1.add(jButtonModificarAdmin);
 			}
 			{
-				jButtonSalir = new JButton();
-				getContentPane().add(jButtonSalir);
-				jButtonSalir.setText("Salir");
-				jButtonSalir.setBounds(347, 257, 65, 31);
-				jButtonSalir.addActionListener(this);
-			}
-			{
+				jToolBar1.addSeparator();
 				jButtonGenerarInforme = new JButton();
-				getContentPane().add(jButtonGenerarInforme);
 				jButtonGenerarInforme.setText("Generar Informe");
-				jButtonGenerarInforme.setBounds(35, 255, 183, 35);
 				jButtonGenerarInforme.addActionListener(this);
+				jToolBar1.add(jButtonGenerarInforme);
 			}
+			{
+				jToolBar1.addSeparator();
+				jButtonSalir = new JButton();
+				jButtonSalir.setText("Salir");
+				jButtonSalir.addActionListener(this);
+				jToolBar1.add(jButtonSalir);
+			}
+			
 			pack();
-			this.setSize(439, 337);
+			this.setSize(850, 80);
 		} catch (Exception e) {
 			// add your error handling code here
 			e.printStackTrace();
@@ -125,39 +140,35 @@ public class principalAdministrador extends javax.swing.JFrame implements Action
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == jButtonSalir) {
-			principalAplicacion principal = new principalAplicacion();
-			principal.setVisible(true);
-			this.dispose();
-		}
+		
 		if (e.getSource() == jButtonAgregarEstudiante) {
 			crearEstudiante c = new crearEstudiante();
 			c.setVisible(true);
-			this.dispose();
 		}
 		if (e.getSource() == jButtonBuscarEstudiante) {
 			buscarEstudiante b = new buscarEstudiante();
 			b.setVisible(true);
-			this.dispose();
 		}
 		if (e.getSource() == jButtonEliminarEstudiante) {
 			eliminarEstudiante e1 = new eliminarEstudiante();
 			e1.setVisible(true);
-			this.dispose();
-		}
-		if (e.getSource() == jButtonModificarAdmin) {
-			modificarAdministrador a = new modificarAdministrador();
-			a.setVisible(true);
-			this.dispose();
 		}
 		if (e.getSource() == jButtonModificarEstudiante) {
 			modificarEstudiante m = new modificarEstudiante();
 			m.setVisible(true);
-			this.dispose();
+		}
+		if (e.getSource() == jButtonModificarAdmin) {
+			modificarAdministrador a = new modificarAdministrador();
+			a.setVisible(true);
+			
 		}
 		if (e.getSource() == jButtonGenerarInforme) {
 			generarInforme m = new generarInforme();
 			m.setVisible(true);
+		}
+		if (e.getSource() == jButtonSalir) {
+			principalAplicacion principal = new principalAplicacion();
+			principal.setVisible(true);
 			this.dispose();
 		}
 

@@ -17,7 +17,7 @@ public class dataConnection {
 	 */
 	private static String user = "root";
 	private static String password = "12345";
-	private static String dataBase = "instituto_Montenegro";
+	private static String dataBase = "instituto_montenegro";
 	static String url = "jdbc:mysql://localhost/" + dataBase;
 	private static Connection connection = null;
 

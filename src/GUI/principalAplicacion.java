@@ -1,5 +1,7 @@
 package GUI;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,6 +13,9 @@ import javax.swing.WindowConstants;
 import org.opencv.core.Core;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -37,6 +42,12 @@ public class principalAplicacion extends javax.swing.JFrame implements ActionLis
 	 */
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		/* Estilo de la ventana */
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				principalAplicacion inst = new principalAplicacion();
@@ -48,24 +59,29 @@ public class principalAplicacion extends javax.swing.JFrame implements ActionLis
 
 	public principalAplicacion() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
 	}
 
 	private void initGUI() {
 		try {
+			setLocation(400, 250);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
+			setTitle("COMEDOR INSTITUTO MONTENEGRO");
 			{
 				jLabelBienvenido = new JLabel();
 				getContentPane().add(jLabelBienvenido);
-				jLabelBienvenido.setText("Bienvenido a COMEDOR");
-				jLabelBienvenido.setBounds(126, 28, 197, 34);
+				jLabelBienvenido.setText("Bienvenido a COMEDOR INSTITUTO MONTENEGRO");
+				jLabelBienvenido.setBounds(50, 28, 300, 34);
 			}
 			{
 				jLabelDescripcion = new JLabel();
 				getContentPane().add(jLabelDescripcion);
 				jLabelDescripcion.setText("Para acceder elija la su perfil");
-				jLabelDescripcion.setBounds(82, 68, 224, 43);
+				jLabelDescripcion.setBounds(120, 68, 224, 43);
 			}
 			{
 				jButtonAdministrador = new JButton();
@@ -73,6 +89,7 @@ public class principalAplicacion extends javax.swing.JFrame implements ActionLis
 				jButtonAdministrador.setText("Administrador");
 				jButtonAdministrador.setBounds(39, 170, 141, 48);
 				jButtonAdministrador.addActionListener(this);
+
 			}
 			{
 				jButtonEstudiante = new JButton();
@@ -97,7 +114,7 @@ public class principalAplicacion extends javax.swing.JFrame implements ActionLis
 			this.dispose();
 		}
 		if (e.getSource() == jButtonEstudiante) {
-			logInEstudiante login1 = new logInEstudiante();
+			logInEstudiante1 login1 = new logInEstudiante1();
 			login1.setVisible(true);
 			this.dispose();
 		}

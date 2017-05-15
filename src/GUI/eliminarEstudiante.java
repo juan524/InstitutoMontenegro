@@ -1,5 +1,7 @@
 package GUI;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -17,6 +19,8 @@ import javax.swing.WindowConstants;
 import Logic.dataConnection;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.ImageIcon;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -44,6 +48,11 @@ public class eliminarEstudiante extends javax.swing.JFrame implements ActionList
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				eliminarEstudiante inst = new eliminarEstudiante();
@@ -59,11 +68,16 @@ public class eliminarEstudiante extends javax.swing.JFrame implements ActionList
 
 	public eliminarEstudiante() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
 	}
 
 	private void initGUI() {
 		try {
+			setTitle("PAE Instituto Montenegro-Eliminar Estudiante");
+			setLocation(400, 250);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			{
@@ -98,9 +112,10 @@ public class eliminarEstudiante extends javax.swing.JFrame implements ActionList
 			}
 			{
 				jButtonAtras = new JButton();
+				jButtonAtras.setIcon(new ImageIcon(LogInAdmin.class.getResource("/imagen/atras.png")));
 				getContentPane().add(jButtonAtras);
-				jButtonAtras.setText("Atras");
-				jButtonAtras.setBounds(368, 239, 41, 23);
+				jButtonAtras.setBounds(360, 200, 40, 40);
+				jButtonAtras.setBorderPainted(false);
 				jButtonAtras.addActionListener(this);
 			}
 			pack();
@@ -134,8 +149,6 @@ public class eliminarEstudiante extends javax.swing.JFrame implements ActionList
 			}
 		}
 		if (e.getSource() == jButtonAtras) {
-			principalAdministrador p = new principalAdministrador();
-			p.setVisible(true);
 			this.dispose();
 		}
 

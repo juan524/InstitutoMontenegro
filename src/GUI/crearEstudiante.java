@@ -2,6 +2,7 @@ package GUI;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -46,6 +47,7 @@ import Logic.dataConnection;
 import Logic.institutoMontenegro;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 public class crearEstudiante extends javax.swing.JFrame implements ActionListener {
 	/**
@@ -102,7 +104,11 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	 */
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -153,7 +159,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 							Highgui.imencode(".bmp", frame, mem);
 							Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
 							BufferedImage buff = (BufferedImage) im;
-							if (g.drawImage(buff, 0, 0, getWidth(), getHeight() - 150, 0, 0, buff.getWidth(),
+							if (g.drawImage(buff, 0, 0, jPanel1.getWidth(), jPanel1.getHeight(), 0, 0, buff.getWidth(),
 									buff.getHeight(), null)) {
 								if (runnable == false) {
 									System.out.println("Paused ..... ");
@@ -172,12 +178,17 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 
 	public crearEstudiante() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
 	}
 
 	private void initGUI() {
 		try {
+			setLocation(400, 250);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			setTitle("PAE Instituto Montenegro");
 			getContentPane().setLayout(null);
 			{
 				jLabelTitulo = new JLabel();
@@ -194,7 +205,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			{
 				jTextFieldnombre = new JTextField();
 				getContentPane().add(jTextFieldnombre);
-				jTextFieldnombre.setBounds(189, 90, 160, 23);
+				jTextFieldnombre.setBounds(189, 90, 160, 30);
 			}
 			{
 				jLabelApellidos = new JLabel();
@@ -205,7 +216,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			{
 				jTextFieldApellidos = new JTextField();
 				getContentPane().add(jTextFieldApellidos);
-				jTextFieldApellidos.setBounds(189, 132, 160, 23);
+				jTextFieldApellidos.setBounds(189, 132, 160, 30);
 			}
 			{
 				jLabelDocumento = new JLabel();
@@ -216,7 +227,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			{
 				jTextFieldDocumento = new JTextField();
 				getContentPane().add(jTextFieldDocumento);
-				jTextFieldDocumento.setBounds(189, 178, 160, 23);
+				jTextFieldDocumento.setBounds(189, 178, 160, 30);
 			}
 			{
 				jLabelGrado = new JLabel();
@@ -227,7 +238,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			{
 				jTextFieldGrado = new JTextField();
 				getContentPane().add(jTextFieldGrado);
-				jTextFieldGrado.setBounds(189, 229, 160, 23);
+				jTextFieldGrado.setBounds(189, 229, 160, 30);
 			}
 			{
 				jLabelSexo = new JLabel();
@@ -276,13 +287,15 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			{
 				jButtonAtras = new JButton();
 				getContentPane().add(jButtonAtras);
-				jButtonAtras.setText("Atras");
-				jButtonAtras.setBounds(450, 32, 41, 23);
+				jButtonAtras.setIcon(new ImageIcon(LogInAdmin.class.getResource("/imagen/atras.png")));
+				jButtonAtras.setBorderPainted(false);
+				jButtonAtras.setBounds(450, 32, 40, 40);
 				jButtonAtras.addActionListener(this);
 			}
 			{
 				jPanel1 = new JPanel();
 				getContentPane().add(jPanel1);
+				jPanel1.setBounds(560, 10, 375, 270);
 				jPanel1.setBounds(560, 12, 678, 240);
 			}
 			{
@@ -326,8 +339,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jButtonAtras || e.getSource() == jButtonAtras2) {
-			principalAdministrador p = new principalAdministrador();
-			p.setVisible(true);
+					
 			this.dispose();
 		}
 
@@ -376,6 +388,7 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 		}
 		if (e.getSource() == jButtonTerminar) {
 			limpiar();
+			this.setSize(550, 600);
 
 			myThread.runnable = false;
 			this.setSize(549, 424);
@@ -388,6 +401,9 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 			jComboMetodologia.setEditable(true);
 			jComboSexo.setEditable(true);
 			jComboTipoPoblacion.setEditable(true);
+			//terminar el uso del recurso de la camara
+			webSource.release();
+			
 			jButtonCrearEstudiante.setVisible(true);
 
 		}
@@ -443,6 +459,13 @@ public class crearEstudiante extends javax.swing.JFrame implements ActionListene
 	}
 
 	public void limpiar() {
+		jTextFieldApellidos.setText("");
+		jTextFieldnombre.setText("");
+		jTextFieldDocumento.setText("");
+		jTextFieldGrado.setText("");
+		jComboMetodologia.setSelectedIndex(0);
+		jComboSexo.setSelectedIndex(0);
+		jComboTipoPoblacion.setSelectedIndex(0);
 		jTextFieldApellidos.setText(" ");
 		jTextFieldnombre.setText(" ");
 		jTextFieldDocumento.setText(" ");

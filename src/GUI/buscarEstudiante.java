@@ -1,5 +1,7 @@
 package GUI;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -7,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,6 +20,7 @@ import javax.swing.WindowConstants;
 import Logic.dataConnection;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -51,11 +55,18 @@ public class buscarEstudiante extends javax.swing.JFrame implements ActionListen
 	private JLabel jLabeldocumento;
 	private JLabel jLabelIntro;
 	private JButton jButtonAtras;
+	private JButton jButtonAgregarHuella;
 
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
+
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				buscarEstudiante inst = new buscarEstudiante();
@@ -71,11 +82,16 @@ public class buscarEstudiante extends javax.swing.JFrame implements ActionListen
 
 	public buscarEstudiante() {
 		super();
+		Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imagen/Escudo.png"));
+		setIconImage(icon);
+		setVisible(true);
 		initGUI();
 	}
 
 	private void initGUI() {
 		try {
+			setTitle("PAE Instituto Montenegro-Buscar Estudiante");
+			setLocation(400, 250);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			{
@@ -189,9 +205,18 @@ public class buscarEstudiante extends javax.swing.JFrame implements ActionListen
 			{
 				jButtonAtras = new JButton();
 				getContentPane().add(jButtonAtras);
-				jButtonAtras.setText("Atras");
-				jButtonAtras.setBounds(386, 12, 41, 23);
+				jButtonAtras.setIcon(new ImageIcon(LogInAdmin.class.getResource("/imagen/atras.png")));
+				jButtonAtras.setBorderPainted(false);
+				jButtonAtras.setBounds(386, 12, 40, 40);
 				jButtonAtras.addActionListener(this);
+			}
+			{
+				jButtonAgregarHuella = new JButton();
+				getContentPane().add(jButtonAgregarHuella);
+				jButtonAgregarHuella.setText("Agregar Huella");
+				jButtonAgregarHuella.setBounds(330, 170, 110, 30);
+				jButtonAgregarHuella.addActionListener(this);
+				jButtonAgregarHuella.setVisible(false);
 			}
 			pack();
 			this.setSize(465, 175);
@@ -204,8 +229,6 @@ public class buscarEstudiante extends javax.swing.JFrame implements ActionListen
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jButtonAtras) {
-			principalAdministrador p = new principalAdministrador();
-			p.setVisible(true);
 			this.dispose();
 		}
 
@@ -246,6 +269,8 @@ public class buscarEstudiante extends javax.swing.JFrame implements ActionListen
 					jLabelMetodologia.setVisible(true);
 					jTextFieldMetodologia.setVisible(true);
 					jTextFieldMetodologia.setText(res.getString("modeloPedagogico"));
+
+					jButtonAgregarHuella.setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(null, "El estudiante buscado no se encuentra en la base de datos");
 					jTextFieldDocumento.setText(" ");
@@ -255,6 +280,11 @@ public class buscarEstudiante extends javax.swing.JFrame implements ActionListen
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		if (e.getSource() == jButtonAgregarHuella) {
+			GuardarHuella p = new GuardarHuella();
+			p.setVisible(true);
+			this.dispose();
 		}
 
 	}
